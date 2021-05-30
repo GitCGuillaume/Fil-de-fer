@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 16:43:07 by gchopin           #+#    #+#             */
-/*   Updated: 2020/06/09 14:51:05 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/05/30 10:52:40 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ static int	is_other(char c)
 		return (0);
 }
 
-int	ft_atoi(const char *str)
+ssize_t	ft_atoi(const char *str)
 {
 	int	i;
-	int	result;
-	int	symbol;
+	ssize_t	result;
+	ssize_t	symbol;
 
 	i = 0;
 	result = 0;
