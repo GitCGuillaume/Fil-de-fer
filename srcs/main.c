@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:14:33 by gchopin           #+#    #+#             */
-/*   Updated: 2021/05/29 19:48:58 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/05/31 10:31:42 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int	main(int argc, char **argv)
 		get_line_fd(&thread);
 	thread.lines = ft_split(thread.line, '|');
 	check_lines(&thread);
+	close_program_error(&thread, "End of program", 2);
 	return (0);
 }
