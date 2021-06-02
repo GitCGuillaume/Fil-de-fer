@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/01 10:05:37 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/02 10:33:52 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int	check_lines(t_thread *thread)
 				j++;
 			if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
 				close_program_error(thread, "Must have only 1 space after number", 2);
+			thread->nb_segment = thread->nb_segment + 1;
 		}
 		i++;
 	}

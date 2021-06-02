@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:38:58 by gchopin           #+#    #+#             */
-/*   Updated: 2021/05/29 19:23:38 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/02 12:14:51 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ void	clear_lines(t_thread *thread)
 	}
 }
 
+int	close_program_esc(t_thread *thread)
+{
+	ft_putstr_fd("Close OK\n", 1);
+	if (thread == NULL)
+		exit(EXIT_FAILURE);
+	if (thread->line != NULL)
+		free(thread->line);
+	clear_lines(thread);
+	if (thread->mlx.mlx_win)
+		mlx_destroy_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win);
+	if (thread->mlx.mlx_ptr)
+		free(thread->mlx.mlx_ptr);
+	exit(0);
+	return (0);
+}
+
 void	close_program_error(t_thread *thread, char *str, int fd)
 {
 	ft_putstr_fd("Error\n", 2);
@@ -38,5 +54,9 @@ void	close_program_error(t_thread *thread, char *str, int fd)
 	if (thread->line != NULL)
 		free(thread->line);
 	clear_lines(thread);
+	if (thread->mlx.mlx_win)
+		mlx_destroy_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win);
+	if (thread->mlx.mlx_ptr)
+		free(thread->mlx.mlx_ptr);
 	exit(EXIT_FAILURE);
 }

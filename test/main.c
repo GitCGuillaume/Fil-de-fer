@@ -1,4 +1,5 @@
 #include "../minilibx-linux/mlx.h"
+#include "math.h"
 
 int	get_colour(void *mlx_ptr)
 {
@@ -27,12 +28,20 @@ void	draw_pixel(char *buffer, int lb, int x, int y, int color)
 	int	pixel;
 	pixel = (y * lb) + (x * 4);
 
-	buffer[pixel + 0] = (color) & 0xFF;
-	buffer[pixel + 1] = (color >> 8) & 0xFF;
-	buffer[pixel + 2] = (color >> 16) & 0xFF;
-	buffer[pixel + 3] = (color >> 24) & 0xFF;
+	buffer[pixel + 0] = (color);
+	buffer[pixel + 1] = (color >> 8);
+	buffer[pixel + 2] = (color >> 16);
+	//buffer[pixel + 3] = (color >> 24) & 0xFF;
 	
 }
+
+/*
+ ** bresenham algorithm, will draw a line, with integer values with the help of equation, will test if dp is below or above the segment, incrementes or decrementes values
+ ** , then draw a pixel on the center of this vertical segment
+ ** (to the nearest of the segment)
+ ** this algorith will allow to draw a line from 180 degrees to 360
+ ** SW, S, SE
+*/
 #include <stdio.h>
 void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, int colour)
 {
@@ -48,6 +57,7 @@ void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, i
 		if (dx >= dy)
 		{
 			dp = 2 * dy - dx;
+			printf("dp=%d\n", dp);
 			while (x1 > x0)
 			{
 				if (dp > 0)
@@ -140,7 +150,17 @@ int	main(void)
 	mlx_win = mlx_new_window(mlx_ptr, 500, 500, "Test");
 	mlx_img = mlx_new_image(mlx_ptr, 500, 500);
 	buffer = mlx_get_data_addr(mlx_img, &pix, &lb, &edn);
-	test(mlx_ptr, lb, buffer, 250, 250, 250, 400, get_colour(mlx_ptr));
+	//X
+	//test(mlx_ptr, lb, buffer, 100, 100, 100 , 300, get_colour(mlx_ptr));
+	//Y
+	//test(mlx_ptr, lb, buffer, 100, 100, 300, 100, get_colour(mlx_ptr));
+printf("atan=%f\n", atan(30));	
+	test(mlx_ptr, lb, buffer, 200, 200, 300, 252, get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 200, 200, 100, (100 *atan(30))*0.82, get_colour(mlx_ptr));
+	
+	//test(mlx_ptr, lb, buffer, 200, 200, (300)*0.82, (300)*0.82, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 200, 200, 300, 200, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 200, 200, (100 * 0.82) *atan(0.52), (300 * 0.82)*atan(0.52), get_colour(mlx_ptr));
 	mlx_put_image_to_window(mlx_ptr, mlx_win, mlx_img, 0, 0);
 	mlx_loop(mlx_ptr);
 	mlx_destroy_window(mlx_ptr, mlx_win);

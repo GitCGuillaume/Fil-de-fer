@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:14:33 by gchopin           #+#    #+#             */
-/*   Updated: 2021/05/31 10:31:42 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/02 14:32:15 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,25 @@ int		ft_close_fd(int fd)
 	}
 	return (fd);
 }
+void	init_null_struct(t_thread *thread)
+{
+	thread->fd = -1;
+	thread->nb_segment = 0;
+	thread->line = NULL;
+	thread->lines = NULL;
+	thread->mlx.mlx_ptr = NULL;
+	thread->mlx.mlx_win = NULL;
+	thread->mlx.mlx_img = NULL;
+	thread->mlx.mlx_get_data = NULL;
+	thread->mlx.endian = 0;
+}
 
 int	main(int argc, char **argv)
 {
 	t_thread	thread;
 	char	*result;
 
-	thread.fd = -1;
+	init_null_struct(&thread);
 	if (argc != 2)
 		close_program_error(0, "Wrong number of parameter.\n", 2);
 	result = ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1]));
@@ -60,6 +72,7 @@ int	main(int argc, char **argv)
 		get_line_fd(&thread);
 	thread.lines = ft_split(thread.line, '|');
 	check_lines(&thread);
+	init_window(&thread);
 	close_program_error(&thread, "End of program", 2);
 	return (0);
 }
