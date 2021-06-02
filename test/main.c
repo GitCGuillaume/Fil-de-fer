@@ -1,168 +1,78 @@
-#include "../minilibx-linux/mlx.h"
-#include "math.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/29 12:14:33 by gchopin           #+#    #+#             */
+/*   Updated: 2021/06/02 14:32:15 by gchopin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	get_colour(void *mlx_ptr)
+#include "fdf.h"
+
+int		ft_open_fd(char *path)
 {
-	int	colour;
-	int	r;
-	int	g;
-	int	b;
+	int	fd;
 
-	colour = 0;
-	r = 255;
-	g = 0;
-	b = 0;
-	if ((r >= 0 && r <= 255) && (g >= 0 && g <= 255)
-			&& (b >= 0 && b <= 255))
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
 	{
-		colour = r << 16;
-		colour += g << 8;
-		colour += b;
-		return (mlx_get_color_value(mlx_ptr, colour));
+		ft_putstr_fd("Error\n", 2);
+		perror("Can't open file");
+		exit(EXIT_FAILURE);
 	}
-	return (0);
+	return (fd);
 }
 
-void	draw_pixel(char *buffer, int lb, int x, int y, int color)
+int		ft_close_fd(int fd)
 {
-	int	pixel;
-	pixel = (y * lb) + (x * 4);
+	int	quit;
 
-	buffer[pixel + 0] = (color);
-	buffer[pixel + 1] = (color >> 8);
-	buffer[pixel + 2] = (color >> 16);
-	//buffer[pixel + 3] = (color >> 24) & 0xFF;
-	
+	quit = -1;
+	if (fd != -1)
+		quit = close(fd);
+	if (quit == -1)
+	{
+		ft_putstr_fd("Error\n", 2);
+		perror("Can't close file");
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+void	init_null_struct(t_thread *thread)
+{
+	thread->fd = -1;
+	thread->nb_segment = 0;
+	thread->line = NULL;
+	thread->lines = NULL;
+	thread->mlx.mlx_ptr = NULL;
+	thread->mlx.mlx_win = NULL;
+	thread->mlx.mlx_img = NULL;
+	thread->mlx.mlx_get_data = NULL;
+	thread->mlx.endian = 0;
 }
 
-/*
- ** bresenham algorithm, will draw a line, with integer values with the help of equation, will test if dp is below or above the segment, incrementes or decrementes values
- ** , then draw a pixel on the center of this vertical segment
- ** (to the nearest of the segment)
- ** this algorith will allow to draw a line from 180 degrees to 360
- ** SW, S, SE
-*/
-#include <stdio.h>
-void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, int colour)
+int	main(int argc, char **argv)
 {
-	int	dx = x1 - x0;
-	int	dy = y1 - y0;
-	int	deltaE = 2 * dy;
-	int	deltaNE = 2 * (dy - dx);
-	int	dp = 0;
+	t_thread	thread;
+	char	*result;
 
-	draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
-	if (x1 >= x0)
-	{
-		if (dx >= dy)
-		{
-			dp = 2 * dy - dx;
-			printf("dp=%d\n", dp);
-			while (x1 > x0)
-			{
-				if (dp > 0)
-				{
-					dp = dp + (2 * (dy - dx));
-					y0++;
-				}
-				else
-				{
-					dp = dp + (2 * dy);
-				}
-				x0++;
-				draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
-			}
-		}
-		else
-		{
-			dp = 2 * dx - dy;
-			while (y1 > y0)
-			{
-				if (dp > 0)
-				{
-					dp = dp + (2 * (dx - dy));
-					x0++;
-				}
-				else
-				{
-					dp = dp + (2 * dx);
-				}
-				y0++;
-				draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
-			}
-
-		}
-	}
-	else
-	{
-		dx = x0 - x1;
-		dy = y0 - y1;
-		if (dx >= dy)
-		{
-			dp = 2 * dy - dx;
-			while (x0 > x1)
-			{
-				if (dp > 0)	
-				{
-					dp = dp + (2 * (dy - dx));
-					y0++;
-				}
-				else
-				{
-					dp = dp + (2 * dy);
-				}
-				x0--;
-				draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
-			}
-		}
-		else
-		{
-			dp = 2 * dx - dy;
-			while (x0 > x1)
-			{
-				if (dp > 0)
-				{
-					dp = dp + 2 * (dx - dy);
-					x0--;
-				}
-				else
-				{
-					dp = dp + (2 * dx);
-				}
-				y0++;
-				draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
-			}
-		}
-	}
-}
-
-int	main(void)
-{
-	void	*mlx_ptr;
-	void	*mlx_win;
-	void	*mlx_img;
-	char	*buffer;
-	int	pix;
-	int	lb;
-	int	edn;
-
-	mlx_ptr = mlx_init();
-	mlx_win = mlx_new_window(mlx_ptr, 500, 500, "Test");
-	mlx_img = mlx_new_image(mlx_ptr, 500, 500);
-	buffer = mlx_get_data_addr(mlx_img, &pix, &lb, &edn);
-	//X
-	//test(mlx_ptr, lb, buffer, 100, 100, 100 , 300, get_colour(mlx_ptr));
-	//Y
-	//test(mlx_ptr, lb, buffer, 100, 100, 300, 100, get_colour(mlx_ptr));
-printf("atan=%f\n", atan(30));	
-	test(mlx_ptr, lb, buffer, 200, 200, 300, 252, get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 200, 200, 100, (100 *atan(30))*0.82, get_colour(mlx_ptr));
-	
-	//test(mlx_ptr, lb, buffer, 200, 200, (300)*0.82, (300)*0.82, get_colour(mlx_ptr));
-	//test(mlx_ptr, lb, buffer, 200, 200, 300, 200, get_colour(mlx_ptr));
-	//test(mlx_ptr, lb, buffer, 200, 200, (100 * 0.82) *atan(0.52), (300 * 0.82)*atan(0.52), get_colour(mlx_ptr));
-	mlx_put_image_to_window(mlx_ptr, mlx_win, mlx_img, 0, 0);
-	mlx_loop(mlx_ptr);
-	mlx_destroy_window(mlx_ptr, mlx_win);
+	init_null_struct(&thread);
+	if (argc != 2)
+		close_program_error(0, "Wrong number of parameter.\n", 2);
+	result = ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1]));
+	if (result == NULL)
+		close_program_error(0, "File format is wrong.\n", 2);
+	if (ft_strcmp(result, ".fdf") != 0)
+		close_program_error(0, "File extension format is wrong", 2);
+	thread.fd = ft_open_fd(argv[1]);
+	if (thread.fd != -1)
+		get_line_fd(&thread);
+	thread.lines = ft_split(thread.line, '|');
+	check_lines(&thread);
+	init_window(&thread);
+	close_program_error(&thread, "End of program", 2);
 	return (0);
 }
