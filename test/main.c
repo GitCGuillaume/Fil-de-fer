@@ -55,6 +55,8 @@ void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, i
 	printf("x1=%d x0=%d\n", x1, x0);
 	if (x1 >= x0)
 	{
+		dx = x1 - x0;
+		dy = y1 - y0;
 		printf("allo");
 		if (dx >= dy)
 		{
@@ -92,13 +94,12 @@ void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, i
 				y0++;
 				draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
 			}
-
 		}
 	}
 	else
 	{
 		dx = x0 - x1;
-		dy = y0 - y1;
+		dy = y1 - y0;
 		if (dx >= dy)
 		{
 			dp = 2 * dy - dx;
@@ -156,13 +157,18 @@ int	main(void)
 	//test(mlx_ptr, lb, buffer, 100, 100, 100 , 300, get_colour(mlx_ptr));
 	//Y
 	//test(mlx_ptr, lb, buffer, 100, 100, 300, 100, get_colour(mlx_ptr));
-printf("atan=%f\n", atan(30));	
-	test(mlx_ptr, lb, buffer, 200, 200, 300 * 0.82, (200*atan(30))*0.82, get_colour(mlx_ptr));
-	printf("hi\n");
-	test(mlx_ptr, lb, buffer, 200, 200, 150, 300*0.82, get_colour(mlx_ptr));
+printf("atan=%f\n", atan(300/200));
+	//printf("sin=%f sin * oppo=%f", sin(0.61), sin(0.61)*300);
+	printf("300*tan(0.61)=%f", 300*tan(0.61));
+	//test(mlx_ptr, lb, buffer, 0, 0, 300*0.82, 209*0.82, get_colour(mlx_ptr));
 	
-	//test(mlx_ptr, lb, buffer, 200, 200, (300)*0.82, (300)*0.82, get_colour(mlx_ptr));
-	//test(mlx_ptr, lb, buffer, 200, 200, 300, 200, get_colour(mlx_ptr));
+	//x0= 200 x1=300 300-200=100 100*tan(0.61)=69
+	test(mlx_ptr, lb, buffer, 200, 200, 300, 200+(((300-200)*tan(0.61)))*0.82, get_colour(mlx_ptr));
+	//y0 = 200 y1=300 300-200=100 
+	test(mlx_ptr, lb, buffer, 200, 200, ((300-200)*tan(0.61))*0.82, 300, get_colour(mlx_ptr));
+	
+	//test(mlx_ptr, lb, buffer, 200, 200, 200/atan(35.26), 300, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 200, 200, 200, 409, get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 200, 200, (100 * 0.82) *atan(0.52), (300 * 0.82)*atan(0.52), get_colour(mlx_ptr));
 	mlx_put_image_to_window(mlx_ptr, mlx_win, mlx_img, 0, 0);
 	mlx_loop(mlx_ptr);
