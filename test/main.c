@@ -161,11 +161,20 @@ printf("atan=%f\n", atan(300/200));
 	//printf("sin=%f sin * oppo=%f", sin(0.61), sin(0.61)*300);
 	printf("300*tan(0.61)=%f", 300*tan(0.61));
 	//test(mlx_ptr, lb, buffer, 0, 0, 300*0.82, 209*0.82, get_colour(mlx_ptr));
+	//(x - y) = res * tan(0.61)
+	
+	//test(mlx_ptr, lb, buffer, 0, 0, 100, (100*tan(0.61)), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 0, 0, 100, (100*tan(0.61)), get_colour(mlx_ptr));
+	//x0-y1
+	printf("sin(35)=%f cos(35)=%f\n", sin(0.61), cos(0.61));
+	//cos(35)*hypotenuse(105-100)=81
+	test(mlx_ptr, lb, buffer, 105, 0, (105-100)*0.82, 81, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 0, 0, 0, 300, get_colour(mlx_ptr));
 	
 	//x0= 200 x1=300 300-200=100 100*tan(0.61)=69
-	test(mlx_ptr, lb, buffer, 200, 200, 300, 200+(((300-200)*tan(0.61)))*0.82, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 200, 200, 300, 200+(((300-200)*tan(0.61)))*0.82, get_colour(mlx_ptr));
 	//y0 = 200 y1=300 300-200=100 
-	test(mlx_ptr, lb, buffer, 200, 200, ((300-200)*tan(0.61))*0.82, 300, get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 200, 200, (((300-200)*tan(0.61)))*0.82, 300, get_colour(mlx_ptr));
 	
 	//test(mlx_ptr, lb, buffer, 200, 200, 200/atan(35.26), 300, get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 200, 200, 200, 409, get_colour(mlx_ptr));
