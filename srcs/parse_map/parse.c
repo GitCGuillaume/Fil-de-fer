@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/02 10:33:52 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/04 18:17:49 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_min_max(t_thread *thread, char *str)
 		close_program_error(thread, "Number must be between -2147483648 and 2147483647", 2);
 }
 
-void	convert_hexa(t_thread *thread, char *str, char **leak)
+static void	convert_hexa(t_thread *thread, char *str, char **leak)
 {
 	double	power;
 	double	nbr;

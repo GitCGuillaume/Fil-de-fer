@@ -22,6 +22,8 @@
 typedef	struct	s_segment
 {
 	int	altitude;
+	int	x;
+	int	y;
 }	t_segment;
 
 typedef struct	s_mlx_fdf
@@ -50,6 +52,7 @@ typedef struct	s_thread
  ** Parse map
 */
 
+void	ft_min_max(t_thread *thread, char *str);
 void	get_line_fd(t_thread *thread);
 int	check_lines(t_thread *thread);
 
@@ -58,11 +61,14 @@ int	check_lines(t_thread *thread);
 */
 
 void	init_window(t_thread *thread);
+void	get_segment(t_thread *thread);
 
 /*
  ** Tools
 */
 
+void	draw_pixel(t_thread *thread, int x, int y, int colour);
+int	get_colour(void *mlx_ptr);
 void	close_program_error(t_thread *thread, char *str, int fd);
 int	close_program_esc(t_thread *thread);
 

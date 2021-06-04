@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/02 16:20:37 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/04 23:02:14 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ int	render_wireframe(void *param)
 	thread->mlx.mlx_get_data = mlx_get_data_addr(thread->mlx.mlx_img,
 			&thread->mlx.bpp, &thread->mlx.size_line, &thread->mlx.endian);
 	if (thread->mlx.mlx_get_data == NULL)
-	close_program_error(thread, "Can't draw in image's data.\n", 2);
+		close_program_error(thread, "Can't draw in image's data.\n", 2);
+	get_segment(thread);
 	mlx_put_image_to_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win,
-			thread->mlx.mlx_img, size_x, size_y);
+			thread->mlx.mlx_img, 0, 0);
+	if (mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img))
+		close_program_error(thread, "Couldn't destroy image\n", 2);
 	return (0);
 }
 
@@ -62,8 +65,8 @@ void	init_window(t_thread *thread)
 			KEYPRESS_P_M, ft_keypress, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
 			KEYPRESS_R_M, ft_keypress, (void *)thread);
+	mlx_loop_hook(thread->mlx.mlx_ptr, &render_wireframe, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, CLIENT_MESSAGE,
 			STRUCT_MASK, close_program_esc, (void *)thread);
-	mlx_loop_hook(thread->mlx.mlx_win, render_wireframe, (void *)thread);
 	mlx_loop(thread->mlx.mlx_ptr);
 }
