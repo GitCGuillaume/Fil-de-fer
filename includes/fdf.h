@@ -46,6 +46,7 @@ typedef struct	s_thread
 	int	nb_segment;
 	int	std_segment_x;
 	int	std_segment_y;
+	int	colour;
 }	t_thread;
 
 /*
@@ -62,12 +63,13 @@ int	check_lines(t_thread *thread);
 
 void	init_window(t_thread *thread);
 void	get_segment(t_thread *thread);
+void	bresenham(t_thread *thread, t_segment start, t_segment end);
 
 /*
  ** Tools
 */
 
-void	draw_pixel(t_thread *thread, int x, int y, int colour);
+void	draw_pixel(t_thread *thread, int x, int y);
 int	get_colour(void *mlx_ptr);
 void	close_program_error(t_thread *thread, char *str, int fd);
 int	close_program_esc(t_thread *thread);

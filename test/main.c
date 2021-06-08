@@ -164,7 +164,7 @@ printf("atan=%f\n", atan(300/200));
 	//(x - y) = res * tan(0.61)
 	
 	//test(mlx_ptr, lb, buffer, 0, 0, 100, (100*tan(0.61)), get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 105, 100, 105+100, 100+(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 0, 0, 0+100, 0+(tan(0.61)*100), get_colour(mlx_ptr));
 	//x0-y1
 	printf("sin(35)=%f cos(35)=%f\n", sin(0.61), cos(0.61));
 	//cos(35)*hypotenuse(105-100)=81

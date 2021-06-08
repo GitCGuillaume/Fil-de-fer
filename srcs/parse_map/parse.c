@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/04 18:17:49 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/08 22:27:28 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,11 @@ int	check_lines(t_thread *thread)
 	int	i;
 	int	j;
 	int	start;
+	int	current_nb;
 
 	i = 0;
 	j = 0;
+	current_nb = 0;
 	if  (thread->lines == NULL)
 		close_program_error(thread, "Map must not be empty.", 2);
 	while (thread->lines[i])
@@ -143,6 +145,7 @@ int	check_lines(t_thread *thread)
 			start = j;
 			while (thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
 				j++;
+			current_nb++;
 			if (thread->lines[i][j] == 'x')
 			{
 				j++;
@@ -160,15 +163,18 @@ int	check_lines(t_thread *thread)
 				close_program_error(thread, "No number returned\n", 2);
 			ft_min_max(thread, str);
 			free(str);
-			if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
+			while (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
 				j++;
-			if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
-				close_program_error(thread, "Must have only 1 space after number", 2);
-			thread->nb_segment = thread->nb_segment + 1;
+			//if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
+			//	close_program_error(thread, "Must have only 1 space after number", 2);
+			
 		}
+		if (current_nb >= thread->nb_segment)
+			thread->nb_segment = current_nb;
+		current_nb = 0;
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
 char	*split_line(t_thread *thread, char *str)

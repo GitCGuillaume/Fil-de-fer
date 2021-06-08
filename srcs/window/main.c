@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/04 23:02:14 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/08 22:26:16 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int	render_wireframe(void *param)
 	int	size_y;
 
 	thread = (t_thread *)param;
+	if (thread->mlx.mlx_img)
+		if (mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img))
+			close_program_error(thread, "Couldn't destroy image\n", 2);
 	thread->mlx.mlx_img = NULL;
 	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
@@ -41,16 +44,32 @@ int	render_wireframe(void *param)
 	get_segment(thread);
 	mlx_put_image_to_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win,
 			thread->mlx.mlx_img, 0, 0);
-	if (mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img))
-		close_program_error(thread, "Couldn't destroy image\n", 2);
 	return (0);
+}
+
+size_t	ft_nb_lines(char **lines)
+{
+	size_t	i;
+
+	i = 0;
+	if (lines == NULL)
+		return (0);
+	while (lines[i])
+	{
+		i++;
+	}
+	return (i);
 }
 
 void	init_window(t_thread *thread)
 {
+	size_t	nb_lines;
 	int	size_x;
 	int	size_y;
 
+	nb_lines = ft_nb_lines(thread->lines);
+	if (nb_lines == 0)
+		close_program_error(thread, "Error\n", 2);
 	size_x = 0;
 	size_y = 0;
 	thread->mlx.mlx_ptr = mlx_init();
@@ -58,8 +77,8 @@ void	init_window(t_thread *thread)
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	if (size_x <= 320 || size_y <= 200)
 		close_program_error(thread, "resolution must be at least 320x200.\n", 2);
-	thread->std_segment_x = size_y / thread->nb_segment;
-	thread->std_segment_y = size_y / thread->nb_segment;
+	thread->std_segment_x = ((size_x * 0.4) / thread->nb_segment);
+	thread->std_segment_y = ((size_y * 0.4) / nb_lines);
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr, size_x, size_y, "Wireframe");
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
 			KEYPRESS_P_M, ft_keypress, (void *)thread);
