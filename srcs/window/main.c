@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/08 22:26:16 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/10 11:47:54 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	init_window(t_thread *thread)
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	if (size_x <= 320 || size_y <= 200)
 		close_program_error(thread, "resolution must be at least 320x200.\n", 2);
-	thread->std_segment_x = ((size_x * 0.4) / thread->nb_segment);
+	thread->std_segment_x = ((size_y * 0.4) / thread->nb_segment);
 	thread->std_segment_y = ((size_y * 0.4) / nb_lines);
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr, size_x, size_y, "Wireframe");
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
