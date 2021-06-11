@@ -45,12 +45,23 @@ void	draw_pixel(char *buffer, int lb, int x, int y, int color)
 #include <stdio.h>
 void	test(void *mlx_ptr, int lb, char *buffer, int x0, int y0, int x1, int y1, int colour)
 {
+
+	int tmp;
+	if (y0 > y1)
+	{
+		tmp = y0;
+		y0 = y1;
+		y1 = tmp;
+		tmp = x0;
+		x0 = x1;
+		x1 = tmp;
+
+	}
 	int	dx = x1 - x0;
 	int	dy = y1 - y0;
 	int	deltaE = 2 * dy;
 	int	deltaNE = 2 * (dy - dx);
 	int	dp = 0;
-
 	draw_pixel(buffer, lb, x0, y0, get_colour(mlx_ptr));
 	printf("x1=%d x0=%d\n", x1, x0);
 	if (x1 >= x0)
@@ -164,12 +175,20 @@ printf("atan=%f\n", atan(300/200));
 	//(x - y) = res * tan(0.61)
 	
 	//test(mlx_ptr, lb, buffer, 0, 0, 100, (100*tan(0.61)), get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 0, 0, 0+100, 0+(tan(0.61)*100), get_colour(mlx_ptr));
+
 	//x0-y1
 	printf("sin(35)=%f cos(35)=%f\n", sin(0.61), cos(0.61));
 	//cos(35)*hypotenuse(105-100)=81
-	test(mlx_ptr, lb, buffer, 105, 100, 105-100, 100+(cos(0.61)*(100)), get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 105, 100, 105, 200, get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150+100, 150+(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150-100, 150+(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150, 250, get_colour(mlx_ptr));
+	
+	test(mlx_ptr, lb, buffer, 150, 150, 150+100, 150-(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150-100, 150-(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150, 0, get_colour(mlx_ptr));
+	
+	//test(mlx_ptr, lb, buffer, 0, 0, 150, 150+(tan(0.61)), get_colour(mlx_ptr));
+	//test(mlx_ptr, lb, buffer, 150, 150, 150, 50, get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 0, 0, 0, 300, get_colour(mlx_ptr));
 	
 	//x0= 200 x1=300 300-200=100 100*tan(0.61)=69

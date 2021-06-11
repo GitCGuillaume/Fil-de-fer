@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/10 21:40:22 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/11 22:07:45 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,17 +162,25 @@ void	read_row(t_thread *thread, t_segment *start_hor, t_segment *end_hor)
 		while (thread->lines[i][j_one])
 		{
 			//radian = 0.61;
-			j_one = get_altitude(thread, start_hor, thread->lines[i], j_one);
+			j_one = get_altitude(thread, end_hor, thread->lines[i], j_one);
 			//radian = degree_to_radian(end_hor->altitude);
 			j_mem = j_one;
 			j_mem = get_altitude(thread, end_hor, thread->lines[i], j_mem);
 			if (thread->lines[i][j_one])
 			{
-				end_hor->x += thread->std_segment_x;
-				end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));
+				end_hor->x = (end_hor->x + thread->std_segment_x);
+				//end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));
+			//	z = end_hor->y;
+			//	z = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));
+				z = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));
+				if (end_hor->altitude == 0)
+					end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));
+				else
+					end_hor->y = end_hor->y + tan(radian_hor) / (end_hor->x - start_hor->x) - (end_hor->altitude);
 			}
 			j_mem = 0;
 			bresenham(thread, *start_hor, *end_hor);
+			end_hor->y = z;
 			//printf("start_hor->alt=%d end_hor->alt=%d\n", start_hor->altitude, end_hor->altitude);
 			//start_hor->altitude = end_hor->altitude;
 			if (thread->lines[i + 1] && thread->lines[i + 1][j_two])
@@ -180,19 +188,24 @@ void	read_row(t_thread *thread, t_segment *start_hor, t_segment *end_hor)
 				start_ver.x = start_hor->x;
 				start_ver.y = start_hor->y;
 				j_two = get_altitude(thread, &end_ver, thread->lines[i + 1], j_two);
-				end_ver.x = start_ver.x - thread->std_segment_x;
+				j_mem = j_two;
+				//j_mem = get_altitude(thread, &end_ver, thread->lines[i + 1], j_mem);
+				end_ver.x = (start_ver.x - thread->std_segment_x);
 				if (x > end_ver.x)
 					x = end_ver.x;
 				if (test == 0)
 				{
 					test = 1;
-					//y += (tan(0.61) * (start_ver.x - end_ver.x));
 					y += (tan(radian_ver) * (start_ver.x - end_ver.x));
 				}
-				//end_ver.y = end_ver.y + (tan(0.61) * (start_ver.x - end_ver.x));
 				a.x = end_ver.x;
-				a.y = start_ver.y + (tan(radian_ver) * (start_ver.x - end_ver.x));
+				z = start_ver.y + (tan(radian_ver) * ((start_ver.x - end_ver.x)));
+				if (end_ver.altitude == 0)
+					a.y = start_ver.y + (tan(radian_ver) * ((start_ver.x - end_ver.x)));
+				else
+					a.y = start_ver.y + (tan(radian_ver) / ((start_ver.x - end_ver.x))) - end_ver.altitude;
 				bresenham(thread, start_ver, a);
+				a.y = z;
 			}
 			start_hor->x = end_hor->x;
 			start_hor->y = end_hor->y;
