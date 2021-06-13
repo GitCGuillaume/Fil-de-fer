@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 14:51:17 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/08 19:07:39 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/13 00:09:34 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	fourth_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
 	dx = start->x - end->x;
 	dy = end->y - start->y;
 	*dp = 2 * dx - dy;
-	while (start->x > start->x)
+	while (start->x > end->x)
 	{
 		if (*dp > 0)
 		{
@@ -115,6 +115,11 @@ void	bresenham(t_thread *thread, t_segment start, t_segment end)
 	int	dy;
 
 	dp = 0;
+	if (start.y > end.y)
+	{
+		ft_swap(&start.y, &end.y);
+		ft_swap(&start.x, &end.x);
+	}
 	dy = end.y - start.y;
 	draw_pixel(thread, start.x, start.y);
 	if (end.x >= start.x)

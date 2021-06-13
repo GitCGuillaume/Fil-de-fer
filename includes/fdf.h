@@ -24,6 +24,7 @@ typedef	struct	s_segment
 	int	altitude;
 	int	x;
 	int	y;
+	int	z;
 }	t_segment;
 
 typedef struct	s_mlx_fdf
@@ -73,5 +74,7 @@ void	draw_pixel(t_thread *thread, int x, int y);
 int	get_colour(void *mlx_ptr);
 void	close_program_error(t_thread *thread, char *str, int fd);
 int	close_program_esc(t_thread *thread);
+double	degree_to_radian(double degree);
+void	ft_swap(int *a, int *b);
 
 #endif

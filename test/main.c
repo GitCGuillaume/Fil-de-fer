@@ -180,11 +180,11 @@ printf("atan=%f\n", atan(300/200));
 	printf("sin(35)=%f cos(35)=%f\n", sin(0.61), cos(0.61));
 	//cos(35)*hypotenuse(105-100)=81
 	test(mlx_ptr, lb, buffer, 150, 150, 150+100, 150+(tan(0.61)*100), get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 150, 150, 150-100, 150+(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150-10, 150+(tan(0.61)*100), get_colour(mlx_ptr));
 	test(mlx_ptr, lb, buffer, 150, 150, 150, 250, get_colour(mlx_ptr));
 	
 	test(mlx_ptr, lb, buffer, 150, 150, 150+100, 150-(tan(0.61)*100), get_colour(mlx_ptr));
-	test(mlx_ptr, lb, buffer, 150, 150, 150-100, 150-(tan(0.61)*100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 150, 150, 150-10, 150-(tan(0.61)*100), get_colour(mlx_ptr));
 	test(mlx_ptr, lb, buffer, 150, 150, 150, 0, get_colour(mlx_ptr));
 	
 	//test(mlx_ptr, lb, buffer, 0, 0, 150, 150+(tan(0.61)), get_colour(mlx_ptr));
