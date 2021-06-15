@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/08 22:27:28 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/16 00:42:36 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,16 @@ int	check_lines(t_thread *thread)
 			while (thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
 				j++;
 			current_nb++;
-			if (thread->lines[i][j] == 'x')
+			if (thread->lines[i][j] == ',')
 			{
-				j++;
+				while (thread->lines[i][j] && thread->lines[i][j] != ' ')
+					i++;
+				/*j++;
 				while ((thread->lines[i][j] >= 'A' && thread->lines[i][j] <= 'F')
 						|| (thread->lines[i][j] >= 'a' && thread->lines[i][j] <= 'f')
 						|| (thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9'))
 					j++;
-				convert_hexa(thread, ft_substr(thread->lines[i], (unsigned int)start, j - start), &str);
+				*///convert_hexa(thread, ft_substr(thread->lines[i], (unsigned int)start, j - start), &str);
 			}
 			if (thread->lines[i][start - 1] == '-')
 				str = ft_substr(thread->lines[i], (unsigned int)start - 1, j - (start - 1));
