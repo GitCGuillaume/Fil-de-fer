@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/16 00:48:15 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/16 11:53:41 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,36 +84,35 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 	str = NULL;
 	if  (line == NULL)
 		close_program_error(thread, "Map must not be empty.", 2);
-	while (ft_isdigit(line[j]) == 0)
+	while (line[j] && ft_isprint(line[j]) == 0)
 		j++;
-	start = j;
-	while (line[j] >= '0' && line[j] <= '9')
+	while (line[j] && ft_isdigit(line[j]) == 0)
 		j++;
-	if (line[j] == ',')
+/*	if (line[j] && ft_isdigit(line[j]) == 1)
 	{
-		while (line[j] && line[j] != ' ')
+	}*/
+	if (ft_isdigit(line[j]))
+	{
+		start = j;
+		while (line[j] && ft_isdigit(line[j]))
 			j++;
-		/*j++;
-		while ((line[j] >= 'A' && line[j] <= 'F')
-			|| (line[j] >= 'a' && line[j] <= 'f')
-			|| (line[j] >= '0' && line[j] <= '9'))
-			j++;
-		convert_hexa(thread, segment, ft_substr(line, (unsigned int)start, j - start));
-		*/
-		if (str)
-			free(str);
-		return (j);
+		if (line[start - 1] == '-')
+			str = ft_substr(line, (unsigned int)start - 1, j - (start - 1));
+		else
+			str = ft_substr(line, (unsigned int)start, j - start);
+		if (str == NULL)
+			close_program_error(thread, "No number returned\n", 2);
+		if (line && line[j] == ',')
+		{
+			while (line[j] && line[j] != ' ')
+				j++;
+		}
+		ft_min_max(thread, str);
+		if (segment)
+			segment->altitude = ft_atoi(str);
 	}
-	if (line[start - 1] == '-')
-		str = ft_substr(line, (unsigned int)start - 1, j - (start - 1));
-	else
-		str = ft_substr(line, (unsigned int)start, j - start);
-	if (str == NULL)
-		close_program_error(thread, "No number returned\n", 2);
-	ft_min_max(thread, str);
-	if (segment)
-		segment->altitude = ft_atoi(str);
-	free(str);
+	if (str)
+		free(str);
 	if (line[j])
 		while (line[j] && ft_isdigit(line[j]) == 0)
 			j++;
@@ -221,7 +220,6 @@ result = 0;
 				start_ver.y = start_hor->y;
 				end_ver.x = start_ver.x - thread->std_segment_x;
 				j_two = get_altitude(thread, &end_ver, thread->lines[i + 1], j_two);
-				printf("start_ver=%d end_ver=%d j_two=%d\n", start_ver.altitude, end_ver.altitude, j_two);
 				//end_ver.y = start_hor->y + (tan(radian_hor) * (start_ver.x - end_ver.x)); //- end_ver.altitude;
 				//j_mem = j_two;
 				//j_mem = get_altitude(thread, &end_ver, thread->lines[i + 1], j_mem);

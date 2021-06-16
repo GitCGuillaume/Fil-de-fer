@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/16 00:42:36 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/16 11:52:35 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,31 +140,34 @@ int	check_lines(t_thread *thread)
 		while (thread->lines[i][j] != '\0')
 		{
 			str = NULL;
-			while (ft_isdigit(thread->lines[i][j]) == 0)
+			while (thread->lines[i][j] && ft_isprint(thread->lines[i][j]) == 0)
 				j++;
-			start = j;
-			while (thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
+			while (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 0)
 				j++;
-			current_nb++;
-			if (thread->lines[i][j] == ',')
+			if (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 1)
 			{
-				while (thread->lines[i][j] && thread->lines[i][j] != ' ')
-					i++;
-				/*j++;
-				while ((thread->lines[i][j] >= 'A' && thread->lines[i][j] <= 'F')
-						|| (thread->lines[i][j] >= 'a' && thread->lines[i][j] <= 'f')
-						|| (thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9'))
+				start = j;
+				while (thread->lines[i][j] && thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
 					j++;
-				*///convert_hexa(thread, ft_substr(thread->lines[i], (unsigned int)start, j - start), &str);
+				current_nb++;
+				if (ft_isdigit(thread->lines[i][j - 1]))
+				{
+					if (thread->lines[i][start - 1] == '-')
+						str = ft_substr(thread->lines[i], (unsigned int)start - 1, j - (start - 1));
+					else
+						str = ft_substr(thread->lines[i], (unsigned int)start, j - start);
+				}
+				if (str == NULL)
+					close_program_error(thread, "No number returned\n", 2);
+				if (thread->lines[i][j] && thread->lines[i][j] == ',')
+				{
+					while (thread->lines[i][j] && thread->lines[i][j] != ' ')
+						j++;
+				}
+				ft_min_max(thread, str);
 			}
-			if (thread->lines[i][start - 1] == '-')
-				str = ft_substr(thread->lines[i], (unsigned int)start - 1, j - (start - 1));
-			else
-				str = ft_substr(thread->lines[i], (unsigned int)start, j - start);
-			if (str == NULL)
-				close_program_error(thread, "No number returned\n", 2);
-			ft_min_max(thread, str);
-			free(str);
+			if (str)
+				free(str);
 			while (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
 				j++;
 			//if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
