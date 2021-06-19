@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/16 11:52:35 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/19 22:39:45 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,10 @@ static void	convert_hexa(t_thread *thread, char *str, char **leak)
 
 int	check_lines(t_thread *thread)
 {
-	char	*str;
+	//char	*str;
 	int	i;
 	int	j;
-	int	start;
+	//int	start;
 	int	current_nb;
 
 	i = 0;
@@ -139,35 +139,35 @@ int	check_lines(t_thread *thread)
 		j = 0;
 		while (thread->lines[i][j] != '\0')
 		{
-			str = NULL;
+			//str = NULL;
 			while (thread->lines[i][j] && ft_isprint(thread->lines[i][j]) == 0)
 				j++;
 			while (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 0)
 				j++;
 			if (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 1)
 			{
-				start = j;
+			//	start = j;
 				while (thread->lines[i][j] && thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
 					j++;
 				current_nb++;
-				if (ft_isdigit(thread->lines[i][j - 1]))
+				/*if (ft_isdigit(thread->lines[i][j - 1]))
 				{
 					if (thread->lines[i][start - 1] == '-')
 						str = ft_substr(thread->lines[i], (unsigned int)start - 1, j - (start - 1));
 					else
 						str = ft_substr(thread->lines[i], (unsigned int)start, j - start);
-				}
-				if (str == NULL)
-					close_program_error(thread, "No number returned\n", 2);
+				}*/
+				//if (str == NULL)
+				//	close_program_error(thread, "No number returned\n", 2);
 				if (thread->lines[i][j] && thread->lines[i][j] == ',')
 				{
 					while (thread->lines[i][j] && thread->lines[i][j] != ' ')
 						j++;
 				}
-				ft_min_max(thread, str);
+	//			ft_min_max(thread, str);
 			}
-			if (str)
-				free(str);
+			//if (str)
+			//	free(str);
 			while (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
 				j++;
 			//if (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
