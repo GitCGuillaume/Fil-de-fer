@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/17 00:28:43 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/19 04:20:23 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,16 +137,20 @@ void	read_row(t_thread *thread, t_segment *start_hor, t_segment *end_hor)
 	int	test = 0;
 	int start = 0;
 int result;
-int	res;
-res = 0;
+int	res_plus;
+int	res_neg;
+res_plus = 0;
+res_neg = 0;
 result = 0;
-	i = 0;
+int aya = 0;
+i = 0;
+int old_res = 0;
 	j_one = 0;
 	j_two = 0;
 	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
-	start_hor->y = size_y * 0.10;
-	start_ver.y = size_y * 0.10;
+	start_hor->y = size_y * 0.20;
+	start_ver.y = size_y * 0.20;
 	end_hor->x = size_x * 0.50;
 	start_hor->x = size_x * 0.50;
 	end_hor->y = start_hor->y;
@@ -201,48 +205,86 @@ result = 0;
 				if (start == 0)
 				{
 					start = 1;
+					aya = end_hor->z - start_hor->y;
 					if (start_hor->altitude > 0) //&& start_hor->altitude != end_hor->altitude)
-						start_hor->y = end_hor->y - (tan(radian_hor) * (end_hor->x - start_hor->x)) - start_hor->altitude;
+						start_hor->y = start_hor->y - (tan(radian_hor) * (end_hor->x - start_hor->x)); //- start_hor->altitude;
 					else if (start_hor->altitude < 0) //&& start_hor->altitude != end_hor->altitude)
-						start_hor->y = end_hor->y - (tan(radian_hor) / (end_hor->x - start_hor->x)) - start_hor->altitude;
+						start_hor->y = start_hor->y - (tan(radian_hor) / (end_hor->x - start_hor->x)); //- start_hor->altitude;
 					else
-						start_hor->y = end_hor->y - (tan(radian_hor) / (end_hor->x - start_hor->x));// - start_hor->altitude;
+						start_hor->y = start_hor->y - (tan(radian_hor) / (end_hor->x - start_hor->x)); //- start_hor->altitude;
+					if (start_hor->altitude != 0)
+					{
+						start_hor->y -= aya;
+						start_hor->y -= start_hor->altitude;
+					}
 				}
-				printf("result=%d\n", result);
 				if (start_hor->altitude == end_hor->altitude && end_hor->altitude > 0)
 				{
-					end_hor->y = end_hor->y + ((tan(radian_hor) / (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					if (result == 0)
+						result = 1;
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) / (end_hor->x - start_hor->x));
+					if (result > 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else if (start_hor->altitude > end_hor->altitude && end_hor->altitude > 0)
 				{
 					result = result - 1;
-					end_hor->y = end_hor->y + ((tan(radian_hor) / (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) / (end_hor->x - start_hor->x)); //- end_hor->altitude;//) * result;
+					if (result > 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else if (end_hor->altitude > start_hor->altitude && end_hor->altitude > 0)
 				{
 					result = result + 1;
-					end_hor->y = end_hor->y + ((tan(radian_hor) / (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					printf("result=%d\n", result);
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) / (end_hor->x - start_hor->x)); //- end_hor->altitude;//) * result;
+					if (result > 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else if (start_hor->altitude > end_hor->altitude && end_hor->altitude < 0)
 				{
 					result = result - 1;
-					end_hor->y = end_hor->y + ((tan(radian_hor) * (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x)); //- end_hor->altitude;//) * result;
+					if (result < -1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else if (end_hor->altitude > start_hor->altitude && end_hor->altitude < 0)
 				{
 					result = result + 1;
-					end_hor->y = end_hor->y + ((tan(radian_hor) * (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x)); //- end_hor->altitude;//) * result;
+					if (result < 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else if (end_hor->altitude == start_hor->altitude && end_hor->altitude < 0)
 				{
-					end_hor->y = end_hor->y + ((tan(radian_hor) * (end_hor->x - start_hor->x)) - end_hor->altitude) * result;
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x)); //* result)  - end_hor->altitude;//) * result;
+					if (result < 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else
 				{
 					result = 0;
 					end_hor->y = end_hor->y + (tan(radian_hor) * (end_hor->x - start_hor->x));//) * result;
+					bresenham(thread, *start_hor, *end_hor);
 				}
-				bresenham(thread, *start_hor, *end_hor);
 			}
 			if (thread->lines[i + 1] /*&& thread->lines[i + 1][j_one]*/)
 			{
@@ -286,24 +328,120 @@ result = 0;
 						end_ver.y = end_hor->z - (tan(radian_ver) / (start_ver.x - end_ver.x)) - end_ver.altitude;
 						bresenham(thread, start_ver, end_ver);
 					}*/
-				}
-				if (thread->lines[i + 1][j_two])
-				{
-					if (end_ver.altitude > 0) //&& start_hor->altitude != end_hor->altitude)
+					if (end_ver.altitude == start_ver.altitude && end_ver.altitude > 0) //&& start_hor->altitude != end_hor->altitude)
 					{
-						res++;
-						end_ver.y = end_hor->z - (tan(radian_ver) * (start_ver.x - end_ver.x)) - end_ver.altitude;
+						if (res_plus == 0)
+							res_plus = 1;
+						end_ver.y = start_ver.y + (tan(radian_ver) * (start_ver.x - end_ver.x));
+						bresenham(thread, start_ver, end_ver);
 					}
-					else if (end_ver.altitude < 0) //&& start_hor->altitude != end_hor->altitude)
+					else if (end_ver.altitude < start_ver.altitude && end_ver.altitude > 0)
 					{
-						res--;
-						end_ver.y = end_hor->z - (tan(radian_ver) / (start_ver.x - end_ver.x)) - end_ver.altitude;
+						aya = (end_hor->z - start_ver.y);
+					}
+					else if (start_ver.altitude < end_ver.altitude && end_ver.altitude > 0)
+					{
+						aya = (end_hor->z - end_hor->y);
+						if (old_res > end_ver.altitude && start_ver.altitude != 0)
+						{
+						//	if (res_neg >= -1)
+						//		res_neg--;
+							//printf("res_plus=%d ", res_plus);
+							res_plus++;
+							end_ver.y = start_ver.y - (tan(radian_ver) / (start_ver.x - end_ver.x)); //* res_plus; //- end_hor->altitude;//) * result;
+							//if (result > 0)
+								end_ver.y += aya;
+							end_ver.y -= end_ver.altitude;
+							bresenham(thread, start_ver, end_ver);
+						}
+						else if (end_ver.altitude > old_res)
+						{
+						//	printf("lahee res_plus=%d res_neg=%d ", res_plus, res_neg);
+							//if (res_plus >= -1)
+							//	res_plus--;
+							end_ver.y = start_ver.y - (tan(radian_ver) / (start_ver.x - end_ver.x));// * res_neg; //- end_hor->altitude;//) * result;
+							res_neg++;
+						//	if (res_neg > 0)
+								end_ver.y += aya;
+							end_ver.y -= end_ver.altitude;
+							bresenham(thread, start_ver, end_ver);
+						}
+						old_res = end_ver.altitude;
 					}
 					else
 					{
-						end_ver.y = end_hor->z - (tan(radian_ver) / (start_ver.x - end_ver.x)) - end_ver.altitude;
+						res_plus = 0;
+						res_neg = 0;
 					}
-					bresenham(thread, start_ver, end_ver);
+
+				}
+				if (thread->lines[i + 1][j_two])
+				{
+					if (end_ver.altitude == start_ver.altitude && end_ver.altitude > 0) //&& start_hor->altitude != end_hor->altitude)
+					{
+						if (res_plus == 0)
+							res_plus = 1;
+						end_ver.y = start_ver.y + (tan(radian_ver) * (start_ver.x - end_ver.x));
+						bresenham(thread, start_ver, end_ver);
+					}
+					else if (end_ver.altitude < start_ver.altitude && end_ver.altitude > 0)
+					{
+						aya = (end_hor->z - start_ver.y);
+					}
+					else if (start_ver.altitude < end_ver.altitude && end_ver.altitude > 0)
+					{
+						aya = (end_hor->z - end_hor->y);
+						if (old_res > end_ver.altitude && start_ver.altitude != 0)
+						{
+							//if (res_neg > 0)
+							res_neg = res_neg - 1;
+							res_plus++;
+							end_ver.y = start_ver.y + (tan(radian_ver) / (start_ver.x - end_ver.x)) * res_plus; //- end_hor->altitude;//) * result;
+							printf("res_plus_avant=%d ", res_plus);
+							printf("res_plus_après=%d ", res_plus);
+							if (res_plus > 0)
+								end_ver.y += aya;
+							end_ver.y -= end_ver.altitude;
+							bresenham(thread, start_ver, end_ver);
+						}
+						else if (end_ver.altitude > old_res)
+						{
+						//	printf("lahee res_plus=%d res_neg=%d ", res_plus, res_neg);
+							//if (res_plus > 0)
+							res_plus = res_plus - 1;
+							end_ver.y = start_ver.y + (tan(radian_ver) * (start_ver.x - end_ver.x)); //* (-res_neg); //* res_neg; //- end_hor->altitude;//) * result;
+							res_neg++;
+							printf("res_neg_avant=%d ", res_neg);
+							printf("res_neg_après=%d ", res_neg);
+								//end_ver.y += aya;
+							end_ver.y -= end_ver.altitude;
+							bresenham(thread, start_ver, end_ver);
+						}
+						old_res = end_ver.altitude;
+					}
+					else
+					{
+						res_plus=0;
+						res_neg=0;
+						//old_res = end_ver.altitude;
+					}
+						/*res++;
+						aya = (end_hor->z - start_ver.y);
+						end_ver.y = end_hor->z + (tan(radian_hor) * (start_ver.x - end_ver.x)); //- start_hor->altitude;
+						//end_ver.y -= end_ver.altitude - start_ver.altitude;
+						bresenham(thread, start_ver, end_ver);
+					*/
+					/*
+					else
+					{
+						end_ver.y = start_ver.y - (tan(radian_ver) / (start_ver.x - end_ver.x)) - end_ver.altitude;
+						//bresenham(thread, start_ver, end_ver);
+					}*/
+					/*else if (end_ver.altitude < start_ver.altitude && end_ver.altitude > 0)
+					{
+						end_ver.y = end_hor->z - (tan(radian_ver) / (start_ver.x - end_ver.x)) - end_ver.altitude;
+						bresenham(thread, start_ver, end_ver);
+					}*/
 				}
 				else
 				{
@@ -319,7 +457,7 @@ result = 0;
 					{
 						end_ver.y = end_hor->z + (tan(radian_ver) * (start_ver.x - end_ver.x)); //- end_ver.altitude;
 					}
-					bresenham(thread, start_ver, end_ver);
+					//bresenham(thread, start_ver, end_ver);
 				}
 					//
 				//		bresenham(thread, start_ver, end_ver);
@@ -348,12 +486,15 @@ result = 0;
 			
 					//	end_ver.z = start_ver.y + (tan(radian_ver) * (start_ver.x - end_ver.x));
 			}
+			//res = 0;
 			j_mem = 0;
 			start_hor->y = end_hor->y;
 			end_hor->y = end_hor->z;
 			start_hor->x = end_hor->x;
 		}
-		res = 0;
+		old_res = 0;
+		res_plus = 0;
+		res_neg = 0;
 		result = 0;
 		a.y = 0;
 		start = 0;
