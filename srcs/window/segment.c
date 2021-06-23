@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/22 23:52:28 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/23 12:20:05 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ result = 0;
 int aya = 0;
 i = 0;
 int 	start_res_one=0;
-int	start_res_two=1;
+int	start_res_two=0;
 int	old_res_one=0;
 int	old_res_two=0;
 j_one = 0;
@@ -220,7 +220,7 @@ j_one = 0;
 							start_hor->y -= aya;
 						start_hor->y -= start_hor->altitude;
 						old_res_one = start_hor->altitude;
-						//result = start_res_one;
+						result = start_res_one;
 					}
 					else if (start_hor->altitude < 0)
 					{
@@ -235,8 +235,8 @@ j_one = 0;
 						}
 						else if (old_res_one < start_hor->altitude)
 						{
-							printf("start=%d old=%d\n", start_hor->altitude, old_res_one);
 							start_res_one -= 1;
+							printf("old_res=%d < start=%d", old_res_one, start_hor->altitude);
 							aya = (end_hor->z - start_hor->y) * start_res_one;
 							start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
 							if (start_res_one < -1 || start_res_one > 1)
@@ -336,6 +336,8 @@ j_one = 0;
 				end_ver.z = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
 				if (test == 0)
 				{
+					if (i == 0 && start_hor->altitude != 0)
+						start_res_two = 1;
 					test = 1;
 					y = end_hor->z;
 					if (start_ver.altitude > 0)
@@ -354,7 +356,7 @@ j_one = 0;
 						if (start_res_two < -1 || start_res_two > 1)
 							start_ver.y -= aya;
 						start_ver.y -= start_ver.altitude;
-					//	res = start_res_two;
+						res = start_res_two;
 					}
 					else if (start_ver.altitude < 0)
 					{
@@ -373,7 +375,6 @@ j_one = 0;
 							aya = (end_ver.z - start_ver.y) * start_res_two;
 							start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
 							if (start_res_two < -1 || start_res_two > 1)
-								start_ver.y += aya;
 								start_ver.y += aya;
 							start_ver.y -= start_ver.altitude;
 						}
