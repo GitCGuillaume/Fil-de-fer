@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/23 12:20:05 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/23 15:03:22 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,8 @@ j_one = 0;
 					{
 						if (start_hor->altitude == old_res_one)
 						{
-							if (start_res_one == 0)
-								start_res_one = 1;
+							//if (start_res_one == 0)
+							//	start_res_one = 1;
 						}
 						else if (start_hor->altitude > old_res_one)
 							start_res_one = start_res_one + 1;
@@ -216,7 +216,7 @@ j_one = 0;
 							start_res_one = start_res_one - 1;
 						aya = (end_hor->z - start_hor->y) * start_res_one;
 						start_hor->y = start_hor->y - (tan(radian) * (end_hor->x - start_hor->x));
-						if (start_res_one < -1 || start_res_one > 1)
+					//	if (start_res_one < -1 || start_res_one > 1)
 							start_hor->y -= aya;
 						start_hor->y -= start_hor->altitude;
 						old_res_one = start_hor->altitude;
@@ -226,31 +226,17 @@ j_one = 0;
 					{
 						if (start_hor->altitude < old_res_one)
 						{
-							start_res_one += 1;
-							aya = (end_hor->z - start_hor->y) * start_res_one;
-							start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
-							if (start_res_one < -1 || start_res_one > 1)
-								start_hor->y += aya;
-							start_hor->y -= start_hor->altitude;
+							start_res_one -=1;
 						}
 						else if (old_res_one < start_hor->altitude)
 						{
-							start_res_one -= 1;
-							printf("old_res=%d < start=%d", old_res_one, start_hor->altitude);
-							aya = (end_hor->z - start_hor->y) * start_res_one;
-							start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
-							if (start_res_one < -1 || start_res_one > 1)
-								start_hor->y += aya;
-							start_hor->y -= start_hor->altitude;
+							start_res_one += 1;
 						}
-						else if (old_res_one == start_hor->altitude)
-						{
-							aya = (end_hor->z - start_hor->y) * start_res_one;
-							start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
-							if (start_res_one < -1 || start_res_one > 1)
-								start_hor->y += aya;
-							start_hor->y -= start_hor->altitude;
-						}
+						aya = (end_hor->z - start_hor->y) * start_res_one;
+						start_hor->y = start_hor->y + (tan(radian) / (end_hor->x - start_hor->x));
+						//if (result < -1 || result > 1)
+							start_hor->y -= aya;
+						start_hor->y -= start_hor->altitude;
 						old_res_one = start_hor->altitude;
 						result = start_res_one;
 					}
@@ -259,23 +245,23 @@ j_one = 0;
 						old_res_one = start_hor->altitude;
 						start_res_one = 0;
 						result = start_res_one;
-						start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
+						start_hor->y = start_hor->y + (tan(radian) / (end_hor->x - start_hor->x));
 					}
 				}
 				if (end_hor->altitude > 0)
 				{
 					if (start_hor->altitude == end_hor->altitude)
 					{
-						if (result == 0)
-							result = 1;
+					//	if (result == 0)
+					//		result = 1;
 					}
 					else if (start_hor->altitude > end_hor->altitude)
 						result = result - 1;
 					else if (end_hor->altitude > start_hor->altitude)
 						result = result + 1;
 					aya = (end_hor->z - end_hor->y) * result;
-					end_hor->y = end_hor->y + (tan(radian) / (end_hor->x - start_hor->x));
-					if (result < -1 || result > 1)
+					end_hor->y = end_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
+				//	if (result < -1 || result > 1)
 						end_hor->y -= aya;
 					end_hor->y -= end_hor->altitude;
 					bresenham(thread, *start_hor, *end_hor);
@@ -285,32 +271,23 @@ j_one = 0;
 					if (start_hor->altitude > end_hor->altitude && end_hor->altitude < 0)
 					{
 						result = result - 1;
-						aya = (end_hor->z - end_hor->y) * result;
-						end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
-						if (result < -1 || result > 1)
-							end_hor->y -= aya;
-						end_hor->y -= end_hor->altitude;
-						bresenham(thread, *start_hor, *end_hor);
 					}
 					else if (end_hor->altitude > start_hor->altitude && end_hor->altitude < 0)
 					{
 						result = result + 1;
-						aya = (end_hor->z - end_hor->y) * result;
-						end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
-						if (result < -1 || result > 1)
-							end_hor->y -= aya;
-						end_hor->y -= end_hor->altitude;
-						bresenham(thread, *start_hor, *end_hor);
 					}
 					else if (end_hor->altitude == start_hor->altitude && end_hor->altitude < 0)
 					{
-						aya = (end_hor->z - end_hor->y) * result;
-						end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
-						if (result < -1 || result > 1)
-							end_hor->y -= aya;
-						end_hor->y -= end_hor->altitude;
-						bresenham(thread, *start_hor, *end_hor);
+					//	if (result == 0)
+					//		result = 1;
 					}
+					printf("end_hor->altitude=%d < start_hor->altitude=%d result=%d\n", end_hor->altitude, start_hor->altitude, result);
+					aya = (end_hor->z - end_hor->y) * result;
+					end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
+					//if (result < -1 || result > 1)
+						end_hor->y -= aya;
+					end_hor->y -= end_hor->altitude;
+					bresenham(thread, *start_hor, *end_hor);
 				}
 				else
 				{
@@ -336,16 +313,16 @@ j_one = 0;
 				end_ver.z = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
 				if (test == 0)
 				{
-					if (i == 0 && start_hor->altitude != 0)
-						start_res_two = 1;
 					test = 1;
 					y = end_hor->z;
+					if (i == 0 && start_hor->altitude != 0)
+						start_res_two = 1;
 					if (start_ver.altitude > 0)
 					{
 						if (start_ver.altitude == start_hor->altitude)
 						{
-							if (start_res_two == 0)
-								start_res_two = 1;
+						//	if (start_res_two == 0)
+						//		start_res_two = 1;
 						}
 						else if (start_ver.altitude > start_hor->altitude)
 							start_res_two = start_res_two + 1;
@@ -353,7 +330,7 @@ j_one = 0;
 							start_res_two = start_res_two - 1;
 						aya = (end_ver.z - start_ver.y) * start_res_two;
 						start_ver.y = start_ver.y - (tan(radian) * (end_ver.x - start_ver.x));
-						if (start_res_two < -1 || start_res_two > 1)
+						//if (start_res_two < -1 || start_res_two > 1)
 							start_ver.y -= aya;
 						start_ver.y -= start_ver.altitude;
 						res = start_res_two;
@@ -362,37 +339,24 @@ j_one = 0;
 					{
 						if (start_ver.altitude < start_hor->altitude)
 						{
-							start_res_two += 1;
-							aya = (end_ver.z - start_ver.y) * start_res_two;
-							start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
-							if (start_res_two < -1 || start_res_two > 1)
-								start_ver.y += aya;
-							start_ver.y -= start_ver.altitude;
+							start_res_two -=1;
 						}
 						else if (start_hor->altitude < start_ver.altitude)
 						{
-							start_res_two -= 1;
-							aya = (end_ver.z - start_ver.y) * start_res_two;
-							start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
-							if (start_res_two < -1 || start_res_two > 1)
-								start_ver.y += aya;
-							start_ver.y -= start_ver.altitude;
+							start_res_two += 1;
 						}
-						else if (start_hor->altitude == start_ver.altitude)
-						{
-							aya = (end_ver.z - start_ver.y) * start_res_two;
-							start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
-							if (start_res_two < -1 || start_res_two > 1)
-								start_ver.y += aya;
-							start_ver.y -= start_ver.altitude;
-						}
+						aya = (end_ver.z - start_ver.y) * start_res_two;
+						start_ver.y = start_ver.y + (tan(radian) / (end_hor->x - start_hor->x));
+						//if (result < -1 || result > 1)
+							start_ver.y -= aya;
+						start_ver.y -= start_ver.altitude;
 						res = start_res_two;
 					}
 					else
 					{
 						start_res_two = 0;
 						res = start_res_two;
-						start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
+						start_ver.y = start_ver.y + (tan(radian) / (end_ver.x - start_ver.x));
 					}
 					/*aya = end_ver.z - start_ver.y;
 					if (start_ver.altitude > 0)
@@ -429,8 +393,8 @@ j_one = 0;
 				{
 					if (start_ver.altitude == end_ver.altitude)
 					{
-						if (res == 0)
-							res = 1;
+						//if (res == 0)
+						//	res = 1;
 					}
 					if (start_ver.altitude > end_ver.altitude)
 						res = res - 1;
@@ -438,7 +402,7 @@ j_one = 0;
 						res = res + 1;
 					aya = (end_ver.z - end_ver.y) * res;
 					end_ver.y = end_ver.y + (tan(radian) / (end_ver.x - start_ver.x));
-					if (res < -1 || res > 1)
+					//if (res < -1 || res > 1)
 						end_ver.y -= aya;
 					end_ver.y -= end_ver.altitude;
 					bresenham(thread, *start_hor, start_ver);
@@ -448,32 +412,22 @@ j_one = 0;
 					if (start_ver.altitude > end_ver.altitude)
 					{
 						res = res - 1;
-						aya = (end_ver.z - end_ver.y) * res;
-						end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
-						if (res < -1 || res > 1)
-							end_ver.y -= aya;
-						end_ver.y -= end_ver.altitude;
-						bresenham(thread, *start_hor, start_ver);
 					}
 					else if (end_ver.altitude > start_ver.altitude)
 					{
 						res = res + 1;
-						aya = (end_ver.z - end_ver.y) * res;
-						end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
-						if (res < -1 || res > 1)
-							end_ver.y -= aya;
-						end_ver.y -= end_ver.altitude;
-						bresenham(thread, *start_hor, start_ver);
 					}
 					else if (end_ver.altitude == start_ver.altitude)
 					{
-						aya = (end_ver.z - end_ver.y) * res;
-						end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
-						if (res < -1 || res > 1)
-							end_ver.y -= aya;
-						end_ver.y -= end_ver.altitude;
-						bresenham(thread, *start_hor, start_ver);
+						//if (res == 0)
+						//	res = 1;
 					}
+					aya = (end_ver.z - end_ver.y) * res;
+					end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
+					//if (res < -1 || res > 1)
+						end_ver.y -= aya;
+					end_ver.y -= end_ver.altitude;
+					bresenham(thread, *start_hor, start_ver);
 				}
 				else
 				{
