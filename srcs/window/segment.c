@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/23 15:03:22 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/24 22:17:17 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,8 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 	return (j);
 }
 
-void	read_row(t_thread *thread, t_segment *start_hor, t_segment *end_hor)
+void	read_row(t_thread *thread)
 {
-	t_segment	start_ver;
-	t_segment	end_ver;
-	t_segment	a;
 	double	radian;
 	int	i;
 	int	j_one;
@@ -151,330 +148,267 @@ j_one = 0;
 	j_two = 0;
 	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
-	start_hor->y = size_y * 0.20;
-	start_ver.y = start_hor->y;
-	end_hor->x = size_x * 0.50;
-	start_hor->x = end_hor->x;
-	start_ver.x = end_hor->x;
-	end_ver.x = end_hor->x;
-	end_hor->y = start_hor->y;
-	end_ver.y = start_ver.y;
-	end_ver.z = end_ver.y;
+	thread->segment[0].y = size_y * 0.0 + thread->mov_ud;
+	thread->segment[2].y = thread->segment[0].y;
+	thread->segment[1].x = size_x * 0.50 + thread->mov_lr;
+	thread->segment[0].x = thread->segment[1].x;
+	thread->segment[2].x = thread->segment[1].x;
+	thread->segment[3].x = thread->segment[1].x;
+	thread->segment[1].y = thread->segment[0].y;
+	thread->segment[3].y = thread->segment[2].y;
+	thread->segment[3].z = thread->segment[3].y;
 	radian = 0.61;
-	end_hor->z = end_hor->y;
-	end_ver.z = end_ver.y;
-	start_ver.altitude = 0;
-	start_hor->altitude = 0;
-	end_ver.altitude = 0;
-	end_hor->altitude = 0;
+	thread->segment[1].z = thread->segment[1].y;
+	thread->segment[3].z = thread->segment[3].y;
+	/*thread->segment[2].altitude = 0;
+	thread->segment[0].altitude = 0;
+	thread->segment[3].altitude = 0;
+	thread->segment[1].altitude = 0;
+	*/
 	start = 0;
 	while (thread->lines[i] != 0)
 	{
-		printf("i=%d\n", i);
+		//printf("i=%d\n", i);
 		j_one = 0;
 		j_two = 0;
+		mlx_hook(thread->mlx.mlx_win, KEYPRESS,
+			KEYPRESS_P_M, ft_keypress, (void *)thread);
+		mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
+			KEYPRESS_R_M, ft_keypress, (void *)thread);
 		while (thread->lines[i][j_one])
 		{
-			j_one = get_altitude(thread, start_hor, thread->lines[i], j_one);
+			j_one = get_altitude(thread, &thread->segment[0], thread->lines[i], j_one);
 			if (thread->lines[i][j_one])
 			{
-				j_mem = get_altitude(thread, end_hor, thread->lines[i], j_one);
-				end_hor->x = end_hor->x + thread->std_segment_x;
-				end_hor->z = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
+				j_mem = get_altitude(thread, &thread->segment[1], thread->lines[i], j_one);
+				thread->segment[1].x = thread->segment[1].x + thread->std_segment_x;
+				thread->segment[1].z = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
 				if (test == 0)
 				{
-					start_ver.y = end_hor->z;
-					end_ver.y = end_hor->z;
+					thread->segment[2].y = thread->segment[1].z;
+					thread->segment[3].y = thread->segment[1].z;
 				}
 				if (start == 0)
 				{
 					start = 1;
-					/*aya = end_hor->z - start_hor->y;
-					if (start_hor->altitude > 0)
-						start_hor->y = start_hor->y - (tan(radian) * (end_hor->x - start_hor->x));
-					else if (start_hor->altitude < 0)
-						start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
-					else
-						start_hor->y = start_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
-					if (start_hor->altitude != 0)
+					if (thread->segment[0].altitude > 0)
 					{
-						start_hor->y -= aya;
-						start_hor->y -= start_hor->altitude;
-					}*/
-					
-					
-					if (start_hor->altitude > 0)
-					{
-						if (start_hor->altitude == old_res_one)
-						{
-							//if (start_res_one == 0)
-							//	start_res_one = 1;
-						}
-						else if (start_hor->altitude > old_res_one)
+						if (thread->segment[0].altitude > old_res_one)
 							start_res_one = start_res_one + 1;
-						else if (old_res_one > start_hor->altitude)
+						else if (old_res_one > thread->segment[0].altitude)
 							start_res_one = start_res_one - 1;
-						aya = (end_hor->z - start_hor->y) * start_res_one;
-						start_hor->y = start_hor->y - (tan(radian) * (end_hor->x - start_hor->x));
-					//	if (start_res_one < -1 || start_res_one > 1)
-							start_hor->y -= aya;
-						start_hor->y -= start_hor->altitude;
-						old_res_one = start_hor->altitude;
+						aya = (thread->segment[1].z - thread->segment[0].y) * start_res_one;
+						thread->segment[0].y = thread->segment[0].y - (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+				//		if (start_res_one < -1 || start_res_one > 1)
+				//			thread->segment[0].y -= aya;
+						thread->segment[0].y -= thread->segment[0].altitude;
+						old_res_one = thread->segment[0].altitude;
 						result = start_res_one;
 					}
-					else if (start_hor->altitude < 0)
+					else if (thread->segment[0].altitude < 0)
 					{
-						if (start_hor->altitude < old_res_one)
-						{
+						if (thread->segment[0].altitude < old_res_one)
 							start_res_one -=1;
-						}
-						else if (old_res_one < start_hor->altitude)
-						{
+						else if (old_res_one < thread->segment[0].altitude)
 							start_res_one += 1;
-						}
-						aya = (end_hor->z - start_hor->y) * start_res_one;
-						start_hor->y = start_hor->y + (tan(radian) / (end_hor->x - start_hor->x));
-						//if (result < -1 || result > 1)
-							start_hor->y -= aya;
-						start_hor->y -= start_hor->altitude;
-						old_res_one = start_hor->altitude;
+						aya = (thread->segment[1].z - thread->segment[0].y) * start_res_one;
+						thread->segment[0].y = thread->segment[0].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+				//		if (start_res_one < -1 || start_res_one > 1)
+				//			thread->segment[0].y -= aya;
+						thread->segment[0].y -= thread->segment[0].altitude;
+						old_res_one = thread->segment[0].altitude;
 						result = start_res_one;
 					}
 					else
 					{
-						old_res_one = start_hor->altitude;
+						old_res_one = thread->segment[0].altitude;
 						start_res_one = 0;
 						result = start_res_one;
-						start_hor->y = start_hor->y + (tan(radian) / (end_hor->x - start_hor->x));
+						thread->segment[0].y = thread->segment[0].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 					}
 				}
-				if (end_hor->altitude > 0)
+				if (thread->segment[1].altitude > 0)
 				{
-					if (start_hor->altitude == end_hor->altitude)
-					{
-					//	if (result == 0)
-					//		result = 1;
-					}
-					else if (start_hor->altitude > end_hor->altitude)
+					if (thread->segment[0].altitude > thread->segment[1].altitude)
 						result = result - 1;
-					else if (end_hor->altitude > start_hor->altitude)
+					else if (thread->segment[1].altitude > thread->segment[0].altitude)
 						result = result + 1;
-					aya = (end_hor->z - end_hor->y) * result;
-					end_hor->y = end_hor->y - (tan(radian) / (end_hor->x - start_hor->x));
+					aya = (thread->segment[1].z - thread->segment[1].y) * result;
+					thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 				//	if (result < -1 || result > 1)
-						end_hor->y -= aya;
-					end_hor->y -= end_hor->altitude;
-					bresenham(thread, *start_hor, *end_hor);
+				//		thread->segment[1].y -= aya;
+					thread->segment[1].y -= thread->segment[1].altitude;
+					bresenham(thread, thread->segment[0], thread->segment[1]);
 				}
-				else if (end_hor->altitude < 0)
+				else if (thread->segment[1].altitude < 0)
 				{
-					if (start_hor->altitude > end_hor->altitude && end_hor->altitude < 0)
+					if (thread->segment[0].altitude > thread->segment[1].altitude)
 					{
 						result = result - 1;
 					}
-					else if (end_hor->altitude > start_hor->altitude && end_hor->altitude < 0)
+					else if (thread->segment[1].altitude > thread->segment[0].altitude)
 					{
 						result = result + 1;
 					}
-					else if (end_hor->altitude == start_hor->altitude && end_hor->altitude < 0)
-					{
-					//	if (result == 0)
-					//		result = 1;
-					}
-					printf("end_hor->altitude=%d < start_hor->altitude=%d result=%d\n", end_hor->altitude, start_hor->altitude, result);
-					aya = (end_hor->z - end_hor->y) * result;
-					end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));
-					//if (result < -1 || result > 1)
-						end_hor->y -= aya;
-					end_hor->y -= end_hor->altitude;
-					bresenham(thread, *start_hor, *end_hor);
+					aya = (thread->segment[1].z - thread->segment[1].y) * result;
+					thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+				//	if (result < -1 || result > 1)
+				//		thread->segment[1].y -= aya;
+					thread->segment[1].y -= thread->segment[1].altitude;
+					bresenham(thread, thread->segment[0], thread->segment[1]);
 				}
 				else
 				{
 					result = 0;
-					end_hor->y = end_hor->y + (tan(radian) * (end_hor->x - start_hor->x));;
-					bresenham(thread, *start_hor, *end_hor);
+					thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+					bresenham(thread, thread->segment[0], thread->segment[1]);
 				}
 			}
 			if (thread->lines[i + 1])
 			{
-				j_two = get_altitude(thread, &start_ver, thread->lines[i + 1], j_two);
+				j_two = get_altitude(thread, &thread->segment[2], thread->lines[i + 1], j_two);
 				if (thread->lines[i + 1][j_two])
 				{
-					j_mem = get_altitude(thread, &end_ver, thread->lines[i + 1], j_two);
+					j_mem = get_altitude(thread, &thread->segment[3], thread->lines[i + 1], j_two);
 				}
 				if (test == 0)
 				{
-					x = start_ver.x - thread->std_segment_x;
-					start_ver.x = x;
-					end_ver.x -= thread->std_segment_x;					
+					x = thread->segment[2].x - thread->std_segment_x;
+					thread->segment[2].x = x;
+					thread->segment[3].x -= thread->std_segment_x;					
 				}
-				end_ver.x = end_ver.x + thread->std_segment_x;
-				end_ver.z = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
+				thread->segment[3].x = thread->segment[3].x + thread->std_segment_x;
+				thread->segment[3].z = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
 				if (test == 0)
 				{
 					test = 1;
-					y = end_hor->z;
-					if (i == 0 && start_hor->altitude != 0)
+					y = thread->segment[1].z;
+					if (i == 0 && thread->segment[0].altitude != 0)
 						start_res_two = 1;
-					if (start_ver.altitude > 0)
+					if (thread->segment[2].altitude > 0)
 					{
-						if (start_ver.altitude == start_hor->altitude)
-						{
-						//	if (start_res_two == 0)
-						//		start_res_two = 1;
-						}
-						else if (start_ver.altitude > start_hor->altitude)
+						if (thread->segment[2].altitude > thread->segment[0].altitude)
 							start_res_two = start_res_two + 1;
-						else if (start_ver.altitude < start_hor->altitude)
+						else if (thread->segment[2].altitude < thread->segment[0].altitude)
 							start_res_two = start_res_two - 1;
-						aya = (end_ver.z - start_ver.y) * start_res_two;
-						start_ver.y = start_ver.y - (tan(radian) * (end_ver.x - start_ver.x));
-						//if (start_res_two < -1 || start_res_two > 1)
-							start_ver.y -= aya;
-						start_ver.y -= start_ver.altitude;
+						aya = (thread->segment[3].z - thread->segment[2].y) * start_res_two;
+						thread->segment[2].y = thread->segment[2].y - (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+				//		if (start_res_two < -1 || start_res_two > 1)
+				//			thread->segment[2].y -= aya;
+						thread->segment[2].y -= thread->segment[2].altitude;
 						res = start_res_two;
 					}
-					else if (start_ver.altitude < 0)
+					else if (thread->segment[2].altitude < 0)
 					{
-						if (start_ver.altitude < start_hor->altitude)
+						if (thread->segment[2].altitude < thread->segment[0].altitude)
 						{
-							start_res_two -=1;
+							start_res_two -= 1;
 						}
-						else if (start_hor->altitude < start_ver.altitude)
+						else if (thread->segment[0].altitude < thread->segment[2].altitude)
 						{
 							start_res_two += 1;
 						}
-						aya = (end_ver.z - start_ver.y) * start_res_two;
-						start_ver.y = start_ver.y + (tan(radian) / (end_hor->x - start_hor->x));
-						//if (result < -1 || result > 1)
-							start_ver.y -= aya;
-						start_ver.y -= start_ver.altitude;
+						aya = (thread->segment[3].z - thread->segment[2].y) * start_res_two;
+						thread->segment[2].y = thread->segment[2].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+				//		if (start_res_two < -1 || start_res_two > 1)
+				//			thread->segment[2].y -= aya;
+						thread->segment[2].y -= thread->segment[2].altitude;
 						res = start_res_two;
 					}
 					else
 					{
 						start_res_two = 0;
 						res = start_res_two;
-						start_ver.y = start_ver.y + (tan(radian) / (end_ver.x - start_ver.x));
+						thread->segment[2].y = thread->segment[2].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
 					}
-					/*aya = end_ver.z - start_ver.y;
-					if (start_ver.altitude > 0)
-						start_ver.y = start_ver.y - (tan(radian) * (end_ver.x - start_ver.x));
-					else if (start_hor->altitude < 0)
-						start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
-					else
-						start_ver.y = start_ver.y - (tan(radian) / (end_ver.x - start_ver.x));
-					if (start_ver.altitude != 0)
-					{
-						start_ver.y -= aya;
-						start_ver.y -= start_ver.altitude;
-					}*/
-					/*if (start_ver.altitude > 0)
-					{
-						if (start_ver.altitude == old_res_two)
-						{
-							if (start_res_two == 0)
-								start_res_two = 1;
-						}
-						if (start_ver.altitude > old_res_two)
-							start_res_two = start_res_two + 1;
-						if (start_ver.altitude < old_res_two)
-							start_res_two = start_res_two - 1;
-						aya = (end_ver.z - start_ver.y) * start_res_two;
-						start_ver.y = start_ver.y - (tan(radian) * (end_ver.x - start_ver.x));
-						if (start_res_two > 1)
-							start_ver.y -= aya;
-						start_ver.y -= start_ver.altitude;
-						old_res_two = start_ver.altitude;
-					}*/
 				}
-				if (end_ver.altitude > 0)
+				if (thread->segment[3].altitude > 0)
 				{
-					if (start_ver.altitude == end_ver.altitude)
+					if (thread->segment[2].altitude == thread->segment[3].altitude)
 					{
 						//if (res == 0)
 						//	res = 1;
 					}
-					if (start_ver.altitude > end_ver.altitude)
+					if (thread->segment[2].altitude > thread->segment[3].altitude)
 						res = res - 1;
-					if (end_ver.altitude > start_ver.altitude)
+					if (thread->segment[3].altitude > thread->segment[2].altitude)
 						res = res + 1;
-					aya = (end_ver.z - end_ver.y) * res;
-					end_ver.y = end_ver.y + (tan(radian) / (end_ver.x - start_ver.x));
-					//if (res < -1 || res > 1)
-						end_ver.y -= aya;
-					end_ver.y -= end_ver.altitude;
-					bresenham(thread, *start_hor, start_ver);
+					aya = (thread->segment[3].z - thread->segment[3].y) * res;
+					thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
+				//	if (res < -1 || res > 1)
+				//		thread->segment[3].y -= aya;
+					thread->segment[3].y -= thread->segment[3].altitude;
+					bresenham(thread, thread->segment[0], thread->segment[2]);
 				}
-				else if (end_ver.altitude < 0)
+				else if (thread->segment[3].altitude < 0)
 				{
-					if (start_ver.altitude > end_ver.altitude)
+					if (thread->segment[2].altitude > thread->segment[3].altitude)
 					{
 						res = res - 1;
 					}
-					else if (end_ver.altitude > start_ver.altitude)
+					else if (thread->segment[3].altitude > thread->segment[2].altitude)
 					{
 						res = res + 1;
 					}
-					else if (end_ver.altitude == start_ver.altitude)
-					{
-						//if (res == 0)
-						//	res = 1;
-					}
-					aya = (end_ver.z - end_ver.y) * res;
-					end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));
-					//if (res < -1 || res > 1)
-						end_ver.y -= aya;
-					end_ver.y -= end_ver.altitude;
-					bresenham(thread, *start_hor, start_ver);
+					aya = (thread->segment[3].z - thread->segment[3].y) * res;
+					thread->segment[3].y = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+				//	if (res < -1 || res > 1)
+				//		thread->segment[3].y -= aya;
+					thread->segment[3].y -= thread->segment[3].altitude;
+					bresenham(thread, thread->segment[0], thread->segment[2]);
 				}
 				else
 				{
 					res = 0;
-					end_ver.y = end_ver.y + (tan(radian) * (end_ver.x - start_ver.x));;
-					bresenham(thread, *start_hor, start_ver);
+					thread->segment[3].y = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+					bresenham(thread, thread->segment[0], thread->segment[2]);
 				}
 			}
 			j_mem = 0;
-			start_hor->y = end_hor->y;
-			start_ver.y = end_ver.y;
-			end_hor->y = end_hor->z;
-			end_ver.y = end_ver.z;
-			start_hor->x = end_hor->x;
-			start_ver.x = end_ver.x;
+			thread->segment[0].y = thread->segment[1].y;
+			thread->segment[2].y = thread->segment[3].y;
+			thread->segment[1].y = thread->segment[1].z;
+			thread->segment[3].y = thread->segment[3].z;
+			thread->segment[0].x = thread->segment[1].x;
+			thread->segment[2].x = thread->segment[3].x;
 		}
 		result = 0;
 		res = 0;
 		start = 0;
-		start_hor->altitude = 0;
-		end_hor->altitude = 0;
-		start_ver.altitude = 0;
-		end_ver.altitude = 0;
+		thread->segment[0].altitude = 0;
+		thread->segment[1].altitude = 0;
+		thread->segment[2].altitude = 0;
+		thread->segment[3].altitude = 0;
 		test=0;
-		start_hor->x = x;
-		end_hor->x = x;
-		start_ver.x = x;
-		end_ver.x = x;
-		start_hor->y = y;
-		end_hor->y = y;
+		thread->segment[0].x = x;
+		thread->segment[1].x = x;
+		thread->segment[2].x = x;
+		thread->segment[3].x = x;
+		thread->segment[0].y = y;
+		thread->segment[1].y = y;
 		i++;
 	}
 }
 
 void	get_segment(t_thread *thread)
 {
-	t_segment	seg_start;
-	t_segment	seg_end;
-
-	seg_start.altitude = 0;
-	seg_start.x = 0;
-	seg_start.y = 0;
-	seg_start.z = 0;
-	seg_end.altitude = 0;
-	seg_end.x = 0;
-	seg_end.y = 0;
-	seg_end.z = 0;
+	/*thread->segment[0].altitude = 0;
+	thread->segment[0].x = 0;
+	thread->segment[0].y = 0;
+	thread->segment[0].z = 0;
+	thread->segment[1].altitude = 0;
+	//thread->segment[1].x = 0;
+	//thread->segment[1].y = 0;
+	thread->segment[1].z = 0;
+	thread->segment[2].altitude = 0;
+	thread->segment[2].x = 0;
+	thread->segment[2].y = 0;
+	thread->segment[2].z = 0;
+	thread->segment[3].altitude = 0;
+	thread->segment[3].x = 0;
+	thread->segment[3].y = 0;
+	thread->segment[3].z = 0;
+	*/
 	thread->colour = get_colour(thread->mlx.mlx_ptr);
-	read_row(thread, &seg_start, &seg_end);
+	read_row(thread);
 }
