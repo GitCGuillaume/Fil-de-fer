@@ -25,6 +25,8 @@ typedef	struct	s_segment
 	int	x;
 	int	y;
 	int	z;
+	int	save_x;
+	int	save_y;
 }	t_segment;
 
 typedef struct	s_mlx_fdf
@@ -41,13 +43,22 @@ typedef struct	s_mlx_fdf
 typedef struct	s_thread
 {
 	t_mlx_fdf mlx;
+	t_segment segment[4];
 	char	**lines;
 	char	*line;
+	int	mov_lr;
+	int	mov_ud;
 	int	fd;
 	int	nb_segment;
 	int	std_segment_x;
 	int	std_segment_y;
+	int	size_x;
+	int	size_y;
 	int	colour;
+	int	save_x;
+	int	save_y;
+	char	start_one;
+	char	start_two;
 }	t_thread;
 
 /*
@@ -62,6 +73,7 @@ int	check_lines(t_thread *thread);
  ** Window
 */
 
+int	ft_keypress(int keypress, void *param);
 void	init_window(t_thread *thread);
 void	get_segment(t_thread *thread);
 void	bresenham(t_thread *thread, t_segment start, t_segment end);
@@ -76,5 +88,9 @@ void	close_program_error(t_thread *thread, char *str, int fd);
 int	close_program_esc(t_thread *thread);
 double	degree_to_radian(double degree);
 void	ft_swap(int *a, int *b);
+int	is_tab(char c);
+int	is_jump(char c);
+int	is_other(char c);
 
+void	draw_pixel_test(t_thread *thread, int x, int y);
 #endif

@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/04 12:08:12 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/20 01:38:39 by gchopin          ###   ########.fr       */
+/*   Created: 2021/06/11 16:01:18 by gchopin           #+#    #+#             */
+/*   Updated: 2021/06/11 16:02:29 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fdf.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	ft_swap(int *a, int *b)
 {
-	char	*ptr;
-	size_t	i;
+	int	tmp;
 
-	i = 0;
-	if (!s)
-		return (NULL);
-	ptr = malloc((sizeof(char) * len) + 1);
-	if (ptr == NULL)
-		return (NULL);
-	if (ft_strlen(s) < start)
-	{
-		ptr[i] = '\0';
-		return (ptr);
-	}
-	while (len > i && s[start] != '\0')
-	{
-		ptr[i] = (char)s[start];
-		start++;
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

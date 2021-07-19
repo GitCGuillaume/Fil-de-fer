@@ -20,13 +20,13 @@ int	ft_keypress(int keypress, void *param)
 	if (keypress == 65307)
 		close_program_esc((t_thread *)param);
 	if (keypress == 65361)
-		thread->mov_lr -=1;
+		thread->mov_lr -= 5;
 	else if (keypress == 65363)
-		thread->mov_lr +=1;
+		thread->mov_lr += 5;
 	else if (keypress == 65362)
-		thread->mov_ud -=1;
+		thread->mov_ud -= 5;
 	else if (keypress == 65364)
-		thread->mov_ud += 1;
+		thread->mov_ud += 5;
 	printf("lr=%d ud=%d\n", thread->mov_lr, thread->mov_ud);
 	printf("keypress=%d\n",keypress);
 	return (0);

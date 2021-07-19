@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/28 23:35:27 by gchopin           #+#    #+#             */
-/*   Updated: 2021/05/29 18:59:49 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/06/16 01:36:25 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 2048
 # endif
 
 # include <stdlib.h>

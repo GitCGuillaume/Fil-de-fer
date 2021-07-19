@@ -187,6 +187,9 @@ printf("atan=%f\n", atan(300/200));
 	test(mlx_ptr, lb, buffer, 150, 150, 150-10, 150-(tan(0.61)*100), get_colour(mlx_ptr));
 	test(mlx_ptr, lb, buffer, 150, 150, 150, 0, get_colour(mlx_ptr));
 	
+	test(mlx_ptr, lb, buffer, 300, 350, 300+100, 350 + (tan(0.61) * 100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 300, 350, 300-100, 350 + (tan(0.61) * 100), get_colour(mlx_ptr));
+	test(mlx_ptr, lb, buffer, 300, 500, 0, 0, get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 0, 0, 150, 150+(tan(0.61)), get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 150, 150, 150, 50, get_colour(mlx_ptr));
 	//test(mlx_ptr, lb, buffer, 0, 0, 0, 300, get_colour(mlx_ptr));
