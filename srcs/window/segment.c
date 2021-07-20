@@ -149,8 +149,8 @@ void	start_draw_first_line(t_thread *thread, int *result, int old_res_one)
 	if (thread->segment[0].altitude > 0)
 	{
 		which_altitude_start(thread->segment[0].altitude, old_res_one, result);
-		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
 		thread->segment[0].y = thread->segment[0].y - (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[0].y -= add_altitude;
 		thread->segment[0].y -= thread->segment[0].altitude;
@@ -159,8 +159,8 @@ void	start_draw_first_line(t_thread *thread, int *result, int old_res_one)
 	else if (thread->segment[0].altitude < 0)
 	{
 		which_altitude_start(thread->segment[0].altitude, old_res_one, result);
-		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
 		thread->segment[0].y = thread->segment[0].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[0].y -= add_altitude;
 		thread->segment[0].y -= thread->segment[0].altitude;
@@ -184,8 +184,8 @@ void	start_draw_second_line(t_thread *thread, int *result)
 	if (thread->segment[2].altitude > 0)
 	{
 		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
-		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		thread->segment[2].y = thread->segment[2].y - (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[2].y -= add_altitude;
 		thread->segment[2].y -= thread->segment[2].altitude;
@@ -193,8 +193,8 @@ void	start_draw_second_line(t_thread *thread, int *result)
 	else if (thread->segment[2].altitude < 0)
 	{
 		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
-		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		thread->segment[2].y = thread->segment[2].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[2].y -= add_altitude;
 		thread->segment[2].y -= thread->segment[2].altitude;
@@ -216,8 +216,8 @@ void	draw_first_line(t_thread *thread, int *result)
 	if (thread->segment[1].altitude > 0)
 	{
 		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
-		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
@@ -226,8 +226,8 @@ void	draw_first_line(t_thread *thread, int *result)
 	else if (thread->segment[1].altitude < 0)
 	{
 		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
-		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
@@ -251,8 +251,8 @@ void	draw_second_line(t_thread *thread, int *result)
 	if (thread->segment[3].altitude > 0)
 	{
 		which_altitude(thread->segment[2].altitude, thread->segment[3].altitude, result);
-		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
 		thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
+		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[3].y -= add_altitude;
 		thread->segment[3].y -= thread->segment[3].altitude;
@@ -261,8 +261,8 @@ void	draw_second_line(t_thread *thread, int *result)
 	else if (thread->segment[3].altitude < 0)
 	{
 		which_altitude(thread->segment[2].altitude, thread->segment[3].altitude, result);
-		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
 		thread->segment[3].y = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
 		if (*result < -1 || *result > 1)
 			thread->segment[3].y -= add_altitude;
 		thread->segment[3].y -= thread->segment[3].altitude;

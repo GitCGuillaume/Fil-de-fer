@@ -120,10 +120,10 @@ void	init_window(t_thread *thread)
 	//thread->std_segment_y = ratio_map(thread->size_y, thread->nb_segment, 1);
 	thread->mov_lr = 0;
 	thread->mov_ud = 0;
-	thread->std_segment_x = ((thread->size_x / thread->size_y)*2) + (nb_lines / thread->nb_segment);
-	thread->std_segment_y = ((thread->size_x / thread->size_y)*2) + (nb_lines / thread->nb_segment);
-	//thread->std_segment_x = (thread->size_x*0.4) / thread->nb_segment;
-	//thread->std_segment_y = (thread->size_y*0.4) / nb_lines;
+	//thread->std_segment_x = (((thread->size_x / thread->size_y) * 2) + ((nb_lines / thread->nb_segment) * 2)*2);
+	//thread->std_segment_y = (((thread->size_x / thread->size_y) * 2) + ((nb_lines / thread->nb_segment) * 2)*2);
+	thread->std_segment_x = (thread->size_x*0.4) / thread->nb_segment;
+	thread->std_segment_y = (thread->size_y*0.4) / nb_lines;
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr, thread->size_x, thread->size_y, "Wireframe");
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
 			KEYPRESS_P_M, ft_keypress, (void *)thread);
