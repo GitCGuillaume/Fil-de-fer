@@ -183,7 +183,7 @@ void	start_draw_second_line(t_thread *thread, int *result)
 	radian = 0.61;
 	if (thread->segment[2].altitude > 0)
 	{
-		which_altitude_start(thread->segment[0].altitude, thread->segment[2].altitude, result);
+		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
 		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		thread->segment[2].y = thread->segment[2].y - (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
 		if (*result < -1 || *result > 1)
@@ -192,7 +192,7 @@ void	start_draw_second_line(t_thread *thread, int *result)
 	}
 	else if (thread->segment[2].altitude < 0)
 	{
-		which_altitude_start(thread->segment[0].altitude, thread->segment[2].altitude, result);
+		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
 		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
 		thread->segment[2].y = thread->segment[2].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 		if (*result < -1 || *result > 1)
@@ -218,7 +218,7 @@ void	draw_first_line(t_thread *thread, int *result)
 		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
 		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
-		if (result < -1 || result > 1)
+		if (*result < -1 || *result > 1)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[1]);
@@ -228,7 +228,7 @@ void	draw_first_line(t_thread *thread, int *result)
 		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
 		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
 		thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
-		if (result < -1 || result > 1)
+		if (*result < -1 || *result > 1)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[1]);
@@ -253,7 +253,7 @@ void	draw_second_line(t_thread *thread, int *result)
 		which_altitude(thread->segment[2].altitude, thread->segment[3].altitude, result);
 		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
 		thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
-		if (res < -1 || res > 1)
+		if (*result < -1 || *result > 1)
 			thread->segment[3].y -= add_altitude;
 		thread->segment[3].y -= thread->segment[3].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[2]);
@@ -346,6 +346,7 @@ void	read_row(t_thread *thread)
 					j_mem = get_altitude(thread, &thread->segment[3], thread->lines[i + 1], j_two);
 				draw_row_part_two(thread, i, &result_two);
 			}
+			j_mem = 0;
 			thread->segment[0].y = thread->segment[1].y;
 			thread->segment[2].y = thread->segment[3].y;
 			thread->segment[1].y = thread->segment[1].z;
@@ -353,8 +354,14 @@ void	read_row(t_thread *thread)
 			thread->segment[0].x = thread->segment[1].x;
 			thread->segment[2].x = thread->segment[3].x;
 		}
+		result_one = 0;
+		result_two = 0;
 		thread->start_one = 0;
 		thread->start_two = 0;
+		thread->segment[0].altitude = 0;
+		thread->segment[1].altitude = 0;
+		thread->segment[2].altitude = 0;
+		thread->segment[3].altitude = 0;
 		thread->segment[0].x = thread->save_x;
 		thread->segment[1].x = thread->save_x;
 		thread->segment[2].x = thread->save_x;
@@ -368,7 +375,7 @@ void	read_row(t_thread *thread)
 void	get_segment(t_thread *thread)
 {
 	thread->colour = get_colour(thread->mlx.mlx_ptr);
-	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->segment[1].x, &thread->segment[0].y))
+	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->segment[1].x, &thread->segment[0].y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	thread->segment[0].y = thread->segment[0].y * 0.0 + thread->mov_ud;
 	thread->segment[2].y = thread->segment[0].y;
