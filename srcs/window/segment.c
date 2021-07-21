@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:52:59 by gchopin           #+#    #+#             */
-/*   Updated: 2021/07/19 11:32:20 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/07/22 01:14:48 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,23 +123,15 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 	return (j);
 }
 
-void	which_altitude_start(int altitude, int old_result, int *result)
-{
-	if (altitude > old_result)
-		*result = *result + 1;
-	else if (old_result > altitude)
-		*result = *result - 1;
-}
-
 void	which_altitude(int altitude_one, int altitude_two, int *result)
 {
 	if (altitude_one > altitude_two)
-		*result = *result - 1;
-	else if (altitude_two > altitude_one)
 		*result = *result + 1;
+	else if (altitude_two > altitude_one)
+		*result = *result - 1;
 }
 
-void	start_draw_first_line(t_thread *thread, int *result, int old_res_one)
+void	start_draw_first_line(t_thread *thread, int *result, int *old_res_one)
 {
 	double	radian;
 	int	add_altitude;
@@ -148,29 +140,29 @@ void	start_draw_first_line(t_thread *thread, int *result, int old_res_one)
 	radian = 0.61;
 	if (thread->segment[0].altitude > 0)
 	{
-		which_altitude_start(thread->segment[0].altitude, old_res_one, result);
-		thread->segment[0].y = thread->segment[0].y - (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
-		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
-		if (*result < -1 || *result > 1)
+		which_altitude(thread->segment[0].altitude, *old_res_one, result);
+		thread->segment[0].y -= (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
+		if (*result != 0)
 			thread->segment[0].y -= add_altitude;
 		thread->segment[0].y -= thread->segment[0].altitude;
-		old_res_one = thread->segment[0].altitude;
+		*old_res_one = thread->segment[0].altitude;
 	}
 	else if (thread->segment[0].altitude < 0)
 	{
-		which_altitude_start(thread->segment[0].altitude, old_res_one, result);
-		thread->segment[0].y = thread->segment[0].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
-		add_altitude = (thread->segment[1].z - thread->segment[0].y) * *result;
-		if (*result < -1 || *result > 1)
+		which_altitude(thread->segment[0].altitude, *old_res_one, result);
+		thread->segment[0].y -= (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
+		if (*result != 0)
 			thread->segment[0].y -= add_altitude;
 		thread->segment[0].y -= thread->segment[0].altitude;
-		old_res_one = thread->segment[0].altitude;
+		*old_res_one = thread->segment[0].altitude;
 	}
 	else
 	{
-		old_res_one = thread->segment[0].altitude;
+		*old_res_one = thread->segment[0].altitude;
 		*result = 0;
-		thread->segment[0].y = thread->segment[0].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
+		thread->segment[0].y -= (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
 	}
 }
 
@@ -183,26 +175,26 @@ void	start_draw_second_line(t_thread *thread, int *result)
 	radian = 0.61;
 	if (thread->segment[2].altitude > 0)
 	{
-		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
-		thread->segment[2].y = thread->segment[2].y - (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
-		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
-		if (*result < -1 || *result > 1)
+		which_altitude(thread->segment[2].altitude, thread->segment[0].altitude, result);
+		thread->segment[2].y -= (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
+		if (*result != 0)
 			thread->segment[2].y -= add_altitude;
 		thread->segment[2].y -= thread->segment[2].altitude;
 	}
 	else if (thread->segment[2].altitude < 0)
 	{
-		which_altitude(thread->segment[0].altitude, thread->segment[2].altitude, result);
-		thread->segment[2].y = thread->segment[2].y - (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
-		add_altitude = (thread->segment[3].z - thread->segment[2].y) * *result;
-		if (*result < -1 || *result > 1)
+		which_altitude(thread->segment[2].altitude, thread->segment[0].altitude, result);
+		thread->segment[2].y -= (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
+		if (*result != 0)
 			thread->segment[2].y -= add_altitude;
 		thread->segment[2].y -= thread->segment[2].altitude;
 	}
 	else
 	{
 		*result = 0;
-		thread->segment[2].y = thread->segment[2].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
+		thread->segment[2].y = thread->segment[2].y - (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
 	}
 }
 
@@ -215,20 +207,20 @@ void	draw_first_line(t_thread *thread, int *result)
 	radian = 0.61;
 	if (thread->segment[1].altitude > 0)
 	{
-		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
+		which_altitude(thread->segment[1].altitude, thread->segment[0].altitude, result);
 		thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
-		if (*result < -1 || *result > 1)
+		if (*result != 0)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[1]);
 	}
 	else if (thread->segment[1].altitude < 0)
 	{
-		which_altitude(thread->segment[0].altitude, thread->segment[1].altitude, result);
-		thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		which_altitude(thread->segment[1].altitude, thread->segment[0].altitude, result);
+		thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 		add_altitude = (thread->segment[1].z - thread->segment[1].y) * *result;
-		if (*result < -1 || *result > 1)
+		if (*result != 0)
 			thread->segment[1].y -= add_altitude;
 		thread->segment[1].y -= thread->segment[1].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[1]);
@@ -236,7 +228,7 @@ void	draw_first_line(t_thread *thread, int *result)
 	else
 	{
 		*result = 0;
-		thread->segment[1].y = thread->segment[1].y + (tan(radian) * (thread->segment[1].x - thread->segment[0].x));
+		thread->segment[1].y = thread->segment[1].y + (tan(radian) / (thread->segment[1].x - thread->segment[0].x));
 		bresenham(thread, thread->segment[0], thread->segment[1]);
 	}
 }
@@ -250,20 +242,20 @@ void	draw_second_line(t_thread *thread, int *result)
 	add_altitude = 0;
 	if (thread->segment[3].altitude > 0)
 	{
-		which_altitude(thread->segment[2].altitude, thread->segment[3].altitude, result);
+		which_altitude(thread->segment[3].altitude, thread->segment[2].altitude, result);
 		thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
 		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
-		if (*result < -1 || *result > 1)
+		if (*result != 0)
 			thread->segment[3].y -= add_altitude;
 		thread->segment[3].y -= thread->segment[3].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[2]);
 	}
 	else if (thread->segment[3].altitude < 0)
 	{
-		which_altitude(thread->segment[2].altitude, thread->segment[3].altitude, result);
-		thread->segment[3].y = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		which_altitude(thread->segment[3].altitude, thread->segment[2].altitude, result);
+		thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
 		add_altitude = (thread->segment[3].z - thread->segment[3].y) * *result;
-		if (*result < -1 || *result > 1)
+		if (*result != 0)
 			thread->segment[3].y -= add_altitude;
 		thread->segment[3].y -= thread->segment[3].altitude;
 		bresenham(thread, thread->segment[0], thread->segment[2]);
@@ -271,12 +263,12 @@ void	draw_second_line(t_thread *thread, int *result)
 	else
 	{
 		*result = 0;
-		thread->segment[3].y = thread->segment[3].y + (tan(radian) * (thread->segment[3].x - thread->segment[2].x));
+		thread->segment[3].y = thread->segment[3].y + (tan(radian) / (thread->segment[3].x - thread->segment[2].x));
 		bresenham(thread, thread->segment[0], thread->segment[2]);
 	}
 }
 
-void	draw_row_part_one(t_thread *thread, int *result_one, int old_res_one)
+void	draw_row_part_one(t_thread *thread, int *result_one, int *old_res_one, int *result)
 {
 	thread->segment[1].x = thread->segment[1].x + thread->std_segment_x;
 	thread->segment[1].z = thread->segment[1].y + (tan(0.61) * (thread->segment[1].x - thread->segment[0].x));
@@ -289,11 +281,12 @@ void	draw_row_part_one(t_thread *thread, int *result_one, int old_res_one)
 	{
 		thread->start_one = 1;
 		start_draw_first_line(thread, result_one, old_res_one);
+		*result = *result_one;
 	}
-	draw_first_line(thread, result_one);
+	draw_first_line(thread, result);
 }
 
-void	draw_row_part_two(t_thread *thread, int i, int *result_two)
+void	draw_row_part_two(t_thread *thread, int i, int *result_two, int *result)
 {
 	if (thread->start_two == 0)
 	{
@@ -307,11 +300,10 @@ void	draw_row_part_two(t_thread *thread, int i, int *result_two)
 	{
 		thread->start_two = 1;
 		thread->save_y = thread->segment[1].z;
-		if (i == 0 && thread->segment[0].altitude != 0)
-			*result_two = 1;
 		start_draw_second_line(thread, result_two);
+		*result = *result_two;
 	}
-	draw_second_line(thread, result_two);
+	draw_second_line(thread, result);
 }
 
 void	read_row(t_thread *thread)
@@ -322,11 +314,17 @@ void	read_row(t_thread *thread)
 	int	j_mem;
 	int	result_one;
 	int	result_two;
-	int	old_res_one = 0;
+	int	result_three;
+	int	result_four;
+	int	old_res_one;
 
+	i = 0;
 	result_one = 0;
 	result_two = 0;
-	i = 0;
+	result_three = 0;
+	result_four = 0;
+	get_altitude(thread, &thread->segment[0], thread->lines[i], 0);
+	old_res_one = thread->segment[0].altitude;
 	while (thread->lines[i] != 0)
 	{
 		j_one = 0;
@@ -337,14 +335,14 @@ void	read_row(t_thread *thread)
 			if (thread->lines[i][j_one])
 			{
 				j_mem = get_altitude(thread, &thread->segment[1], thread->lines[i], j_one);
-				draw_row_part_one(thread, &result_one, old_res_one);
+				draw_row_part_one(thread, &result_one, &old_res_one, &result_three);
 			}
 			if (thread->lines[i + 1])
 			{
 				j_two = get_altitude(thread, &thread->segment[2], thread->lines[i + 1], j_two);
 				if (thread->lines[i + 1][j_two])
 					j_mem = get_altitude(thread, &thread->segment[3], thread->lines[i + 1], j_two);
-				draw_row_part_two(thread, i, &result_two);
+				draw_row_part_two(thread, i, &result_two, &result_four);
 			}
 			j_mem = 0;
 			thread->segment[0].y = thread->segment[1].y;
@@ -354,8 +352,8 @@ void	read_row(t_thread *thread)
 			thread->segment[0].x = thread->segment[1].x;
 			thread->segment[2].x = thread->segment[3].x;
 		}
-		result_one = 0;
-		result_two = 0;
+		//result_one = 0;
+		//result_two = 0;
 		thread->start_one = 0;
 		thread->start_two = 0;
 		thread->segment[0].altitude = 0;
@@ -375,7 +373,7 @@ void	read_row(t_thread *thread)
 void	get_segment(t_thread *thread)
 {
 	thread->colour = get_colour(thread->mlx.mlx_ptr);
-	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->segment[1].x, &thread->segment[0].y))
+	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->segment[1].x, &thread->segment[0].y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	thread->segment[0].y = thread->segment[0].y * 0.0 + thread->mov_ud;
 	thread->segment[2].y = thread->segment[0].y;
