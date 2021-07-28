@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:14:33 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/19 22:38:21 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/07/28 00:34:03 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	init_null_struct(t_thread *thread)
 {
 	thread->fd = -1;
 	thread->nb_segment = 0;
+	thread->nb_lines = 0;
 	thread->line = NULL;
 	thread->lines = NULL;
 	thread->mlx.mlx_ptr = NULL;
@@ -58,7 +59,9 @@ int	main(int argc, char **argv)
 {
 	t_thread	thread;
 	char	*result;
+	int	i;
 
+	i = 0;
 	init_null_struct(&thread);
 	if (argc != 2)
 		close_program_error(0, "Wrong number of parameter.\n", 2);

@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/07/23 02:03:24 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/07/28 18:16:02 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ int	ft_keypress(int keypress, void *param)
 	if (keypress == 65307)
 		close_program_esc((t_thread *)param);
 	if (keypress == 65361)
-		thread->mov_lr += 5;
+		thread->mov_lr += 15;
 	else if (keypress == 65363)
-		thread->mov_lr -= 5;
+		thread->mov_lr -= 15;
 	else if (keypress == 65362)
-		thread->mov_ud += 5;
+		thread->mov_ud += 15;
 	else if (keypress == 65364)
-		thread->mov_ud -= 5;
+		thread->mov_ud -= 15;
 	printf("lr=%d ud=%d\n", thread->mov_lr, thread->mov_ud);
 	printf("keypress=%d\n",keypress);
 	return (0);
@@ -106,6 +106,10 @@ void	init_window(t_thread *thread)
 	double	segment_size;
 	size_t	nb_lines;
 	int	size;
+	int	test = 0;
+	int	i;
+
+	i = 0;
 	nb_lines = ft_nb_lines(thread->lines);
 	if (nb_lines == 0)
 		close_program_error(thread, "Error\n", 2);
@@ -122,9 +126,16 @@ void	init_window(t_thread *thread)
 	thread->mov_ud = 0;
 	//thread->std_segment_x = (((thread->size_x / thread->size_y)) + ((nb_lines / thread->nb_segment)));
 	//thread->std_segment_y = (((thread->size_x / thread->size_y)) + ((nb_lines / thread->nb_segment)));
-	thread->std_segment_x = (thread->size_x / 3) / (thread->nb_segment);
-	thread->std_segment_y = (thread->size_y / 3) / (nb_lines);
+	thread->std_segment_x = (thread->size_x) / thread->nb_segment;
+	thread->nb_lines = (thread->size_y) / nb_lines;
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr, thread->size_x, thread->size_y, "Wireframe");
+	while (4 > i)
+	{
+		thread->segment[i].x = 100;
+		thread->segment[i].y = 100;
+		thread->segment[i].z = 0;
+		i++;
+	}
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
 			KEYPRESS_P_M, ft_keypress, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,

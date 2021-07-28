@@ -50,6 +50,7 @@ typedef struct	s_thread
 	int	mov_ud;
 	int	fd;
 	int	nb_segment;
+	int	nb_lines;
 	int	std_segment_x;
 	int	std_segment_y;
 	int	size_x;
