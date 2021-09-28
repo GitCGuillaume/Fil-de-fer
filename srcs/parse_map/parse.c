@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/07/19 10:25:58 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/09/28 11:10:09 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_min_max(t_thread *thread, char *str)
 	if (ft_atoi(str) > 2147483647 || ft_atoi(str) < -2147483648)
 		close_program_error(thread, "Number must be between -2147483648 and 2147483647", 2);
 }
-
+/*
 static void	convert_hexa(t_thread *thread, char *str, char **leak)
 {
 	double	power;
@@ -120,6 +120,21 @@ static void	convert_hexa(t_thread *thread, char *str, char **leak)
 	}
 	free(str);
 }
+*/
+
+static void	get_number(t_thread *thread, int *i, int *j, int *current_nb)
+{
+	if (thread->lines[*i][*j] && ft_isdigit(thread->lines[*i][*j]) == 1)
+	{
+		while (thread->lines[*i][*j] && thread->lines[*i][*j] >= '0'
+			&& thread->lines[*i][*j] <= '9')
+			(*j)++;
+		(*current_nb)++;
+		if (thread->lines[*i][*j] && thread->lines[*i][*j] == ',')
+			while (thread->lines[*i][*j] && thread->lines[*i][*j] != ' ')
+				(*j)++;
+	}
+}
 
 int	check_lines(t_thread *thread)
 {
@@ -128,7 +143,6 @@ int	check_lines(t_thread *thread)
 	int	current_nb;
 
 	i = 0;
-	j = 0;
 	current_nb = 0;
 	if  (thread->lines == NULL)
 		close_program_error(thread, "Map must not be empty.", 2);
@@ -141,17 +155,7 @@ int	check_lines(t_thread *thread)
 				j++;
 			while (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 0)
 				j++;
-			if (thread->lines[i][j] && ft_isdigit(thread->lines[i][j]) == 1)
-			{
-				while (thread->lines[i][j] && thread->lines[i][j] >= '0' && thread->lines[i][j] <= '9')
-					j++;
-				current_nb++;
-				if (thread->lines[i][j] && thread->lines[i][j] == ',')
-					while (thread->lines[i][j] && thread->lines[i][j] != ' ')
-						j++;
-			}
-			while (thread->lines[i][j] != '\0' && thread->lines[i][j] == ' ')
-				j++;
+			get_number(thread, &i, &j, &current_nb);
 		}
 		if (current_nb >= thread->nb_segment)
 			thread->nb_segment = current_nb;
@@ -196,7 +200,7 @@ void	get_line_fd(t_thread *thread)
 	{
 		ret = get_next_line(thread->fd, &tmp);
 		if (tmp == NULL)
-			close_program_error(thread, "Engine couldn't get the map's lines.", 2);
+			close_program_error(thread, "Engine couldn't get the map lines.", 2);
 		if (ret > 0)
 			thread->line = split_line(thread, tmp);
 	}

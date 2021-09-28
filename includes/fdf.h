@@ -80,6 +80,22 @@ void	get_segment(t_thread *thread);
 void	bresenham(t_thread *thread, t_segment start, t_segment end);
 
 /*
+ ** Bresenham
+*/
+
+void	fourth_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end);
+void	third_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end);
+void	second_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end);
+void	first_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end);
+
+/*
+ ** Bresenham tools
+*/
+
+char	*get_altitude_two(int *j, char *line, int start);
+int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j);
+
+/*
  ** Tools
 */
 
