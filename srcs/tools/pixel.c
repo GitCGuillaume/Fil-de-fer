@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-int	get_colour_2(void *mlx_ptr)
+/*int	get_colour_2(void *mlx_ptr)
 {
 	int	colour;
 	int	r;
@@ -32,21 +32,7 @@ int	get_colour_2(void *mlx_ptr)
 		return (mlx_get_color_value(mlx_ptr, colour));
 	}
 	return (0);
-}
-void	draw_pixel_test(t_thread *thread, int x, int y)
-{
-	int	pixel;
-	int	colour;
-
-	if (x < 0 || y < 0 
-			|| x > thread->size_x || y > thread->size_y)
-		return ;
-	pixel = (y * thread->mlx.size_line) + (x * 4);
-	colour = get_colour_2(thread->mlx.mlx_ptr);
-	thread->mlx.mlx_get_data[pixel + 0] = colour;
-	thread->mlx.mlx_get_data[pixel + 1] = colour >> 8;
-	thread->mlx.mlx_get_data[pixel + 2] = colour >> 16;
-}
+}*/
 
 void	draw_pixel(t_thread *thread, int x, int y)
 {
@@ -58,11 +44,11 @@ void	draw_pixel(t_thread *thread, int x, int y)
 		return ;
 	pixel = (y * thread->mlx.size_line) + (x * 4);
 	colour = thread->colour;
-	if (!thread->mlx.mlx_get_data[pixel + 0])
+	//if (!thread->mlx.mlx_get_data[pixel + 0])
 		thread->mlx.mlx_get_data[pixel + 0] = colour;
-	if (!thread->mlx.mlx_get_data[pixel + 1])
+	//if (!thread->mlx.mlx_get_data[pixel + 1])
 		thread->mlx.mlx_get_data[pixel + 1] = colour >> 8;
-	if (!thread->mlx.mlx_get_data[pixel + 2])
+	//if (!thread->mlx.mlx_get_data[pixel + 2])
 		thread->mlx.mlx_get_data[pixel + 2] = colour >> 16;
 }
 

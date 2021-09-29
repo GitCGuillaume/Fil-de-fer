@@ -43,7 +43,7 @@ int	render_wireframe(void *param)
 		if (mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img))
 			close_program_error(thread, "Couldn't destroy image\n", 2);
 	thread->mlx.mlx_img = NULL;
-	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
+	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	if (size_x <= 320 || size_y <= 200)
 		close_program_error(thread, "resolution must be at least 320x200.\n", 2);
@@ -103,10 +103,10 @@ double	div_math(double a, double b)
 
 void	init_window(t_thread *thread)
 {
-	double	segment_size;
+	//double	segment_size;
 	size_t	nb_lines;
-	int	size;
-	int	test = 0;
+	//int	size;
+	//int	test = 0;
 	int	i;
 
 	i = 0;
@@ -116,7 +116,7 @@ void	init_window(t_thread *thread)
 	thread->size_x = 0;
 	thread->size_y = 0;
 	thread->mlx.mlx_ptr = mlx_init();
-	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->size_x, &thread->size_y))
+	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->size_x, &thread->size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	if (thread->size_x <= 320 || thread->size_y <= 200)
 		close_program_error(thread, "resolution must be at least 320x200.\n", 2);

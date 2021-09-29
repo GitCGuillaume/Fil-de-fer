@@ -12,20 +12,6 @@
 
 #include "fdf.h"
 
-static void	bresenham_two(t_thread *thread, int *dp, t_segment *start, t_segment *end)
-{
-	int	dx;
-	int	dy;
-
-	dx = start->x - end->x;
-	dy = end->y - start->y;
-	if (dx >= dy)
-		third_segment(thread, dp, start, end);
-	else
-		fourth_segment(thread, dp, start, end);
-	
-}
-
 static void	reverse_values(t_segment *start, t_segment *end)
 {
 	if (start->y > end->y)

@@ -80,6 +80,19 @@ void	get_segment(t_thread *thread);
 void	bresenham(t_thread *thread, t_segment start, t_segment end);
 
 /*
+ ** Segment
+*/
+
+void	set_row(t_thread *thread);
+void	set_column(t_thread *thread);
+void	draw_first_line(t_thread *thread);
+void	draw_second_line(t_thread *thread);
+void	draw_row_part_one(t_thread *thread);
+void	draw_row_part_two(t_thread *thread);
+void	start_draw_first_line(t_thread *thread);
+void	start_draw_second_line(t_thread *thread);
+
+/*
  ** Bresenham
 */
 
@@ -103,11 +116,9 @@ void	draw_pixel(t_thread *thread, int x, int y);
 int	get_colour(void *mlx_ptr);
 void	close_program_error(t_thread *thread, char *str, int fd);
 int	close_program_esc(t_thread *thread);
-double	degree_to_radian(double degree);
 void	ft_swap(int *a, int *b);
 int	is_tab(char c);
 int	is_jump(char c);
 int	is_other(char c);
 
-void	draw_pixel_test(t_thread *thread, int x, int y);
 #endif
