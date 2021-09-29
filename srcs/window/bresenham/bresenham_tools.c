@@ -35,10 +35,10 @@ char	*get_altitude_two(int *j, char *line, int start)
 int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 {
 	char	*str;
-	int	start;
+	int		start;
 
 	str = NULL;
-	if  (line == NULL)
+	if (line == NULL)
 		close_program_error(thread, "Map must not be empty.", 2);
 	while (line[j] && ft_isdigit(line[j]) == 0)
 		j++;

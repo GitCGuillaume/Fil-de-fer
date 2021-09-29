@@ -25,9 +25,11 @@ static void	print_grill_column(t_thread *thread, int *j_two, int i)
 {
 	if (thread->lines[i + 1])
 	{
-		*j_two = get_altitude(thread, &thread->segment[2], thread->lines[i + 1], *j_two);
+		*j_two = get_altitude(thread,
+				&thread->segment[2], thread->lines[i + 1], *j_two);
 		if (thread->lines[i + 1][*j_two])
-			get_altitude(thread, &thread->segment[3], thread->lines[i + 1], *j_two);
+			get_altitude(thread,
+				&thread->segment[3], thread->lines[i + 1], *j_two);
 		draw_row_part_two(thread);
 	}
 }
@@ -46,7 +48,8 @@ static void	run_projection(t_thread *thread)
 		j_two = 0;
 		while (thread->lines[i][j_one])
 		{
-			j_one = get_altitude(thread, &thread->segment[0], thread->lines[i], j_one);
+			j_one = get_altitude(thread,
+					&thread->segment[0], thread->lines[i], j_one);
 			print_grill_row(thread, j_one, i);
 			print_grill_column(thread, &j_two, i);
 			set_row(thread);
@@ -59,7 +62,8 @@ static void	run_projection(t_thread *thread)
 void	get_segment(t_thread *thread)
 {
 	thread->colour = get_colour(thread->mlx.mlx_ptr);
-	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &thread->segment[1].x, &thread->segment[0].y))
+	if (mlx_get_screen_size(thread->mlx.mlx_ptr,
+			&thread->segment[1].x, &thread->segment[0].y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	thread->segment[0].y = 0 + thread->mov_ud;
 	thread->segment[2].y = thread->segment[0].y;

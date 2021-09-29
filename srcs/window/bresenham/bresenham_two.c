@@ -12,7 +12,8 @@
 
 #include "fdf.h"
 
-void	fourth_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
+void	fourth_segment(t_thread *thread,
+	int *dp, t_segment *start, t_segment *end)
 {
 	int	dx;
 	int	dy;
@@ -36,7 +37,8 @@ void	fourth_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
 	}
 }
 
-void	third_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
+void	third_segment(t_thread *thread,
+	int *dp, t_segment *start, t_segment *end)
 {
 	int	dx;
 	int	dy;
@@ -46,7 +48,7 @@ void	third_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
 	*dp = 2 * dy - dx;
 	while (start->x > end->x)
 	{
-		if (*dp > 0)	
+		if (*dp > 0)
 		{
 			*dp = *dp + (2 * (dy - dx));
 			start->y = start->y + 1;
@@ -60,7 +62,8 @@ void	third_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
 	}
 }
 
-void	second_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
+void	second_segment(t_thread *thread,
+	int *dp, t_segment *start, t_segment *end)
 {
 	int	dx;
 	int	dy;
@@ -84,7 +87,8 @@ void	second_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
 	}
 }
 
-void	first_segment(t_thread *thread, int *dp, t_segment *start, t_segment *end)
+void	first_segment(t_thread *thread,
+	int *dp, t_segment *start, t_segment *end)
 {
 	int	dx;
 	int	dy;

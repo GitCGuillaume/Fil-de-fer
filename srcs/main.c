@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-int		ft_open_fd(char *path)
+int	ft_open_fd(char *path)
 {
 	int	fd;
 
@@ -26,7 +26,7 @@ int		ft_open_fd(char *path)
 	return (fd);
 }
 
-int		ft_close_fd(int fd)
+int	ft_close_fd(int fd)
 {
 	int	quit;
 
@@ -41,8 +41,12 @@ int		ft_close_fd(int fd)
 	}
 	return (fd);
 }
+
 void	init_null_struct(t_thread *thread)
 {
+	int	i;
+
+	i = 0;
 	thread->fd = -1;
 	thread->nb_segment = 0;
 	thread->nb_lines = 0;
@@ -53,13 +57,24 @@ void	init_null_struct(t_thread *thread)
 	thread->mlx.mlx_img = NULL;
 	thread->mlx.mlx_get_data = NULL;
 	thread->mlx.endian = 0;
+	thread->size_x = 0;
+	thread->size_y = 0;
+	thread->mov_lr = 0;
+	thread->mov_ud = 0;
+	while (4 > i)
+	{
+		thread->segment[i].x = 100;
+		thread->segment[i].y = 100;
+		thread->segment[i].z = 0;
+		i++;
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	t_thread	thread;
-	char	*result;
-	int	i;
+	char		*result;
+	int			i;
 
 	i = 0;
 	init_null_struct(&thread);

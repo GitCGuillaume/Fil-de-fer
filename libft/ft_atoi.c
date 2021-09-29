@@ -38,7 +38,7 @@ static int	is_other(char c)
 
 ssize_t	ft_atoi(const char *str)
 {
-	int	i;
+	int		i;
 	ssize_t	result;
 	ssize_t	symbol;
 

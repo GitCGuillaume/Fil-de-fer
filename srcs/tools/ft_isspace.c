@@ -33,4 +33,3 @@ int	is_other(char c)
 	else
 		return (0);
 }
-

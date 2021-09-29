@@ -8,7 +8,6 @@ void	set_row(t_thread *thread)
 	thread->segment[3].y = thread->segment[3].z;
 	thread->segment[0].x = thread->segment[1].x;
 	thread->segment[2].x = thread->segment[3].x;
-		
 }
 
 void	set_column(t_thread *thread)
