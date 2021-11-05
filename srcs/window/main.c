@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/07/28 18:16:02 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/05 14:15:57 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	init_window(t_thread *thread)
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr,
 			thread->size_x, thread->size_y, "Wireframe");
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
-		KEYPRESS_P_M, ft_keypress, (void *)thread);
+		1L << 0, ft_keypress, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
-		KEYPRESS_R_M, ft_keypress, (void *)thread);
+		1L << 1, ft_keypress, (void *)thread);
 	mlx_loop_hook(thread->mlx.mlx_ptr, &render_wireframe, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, CLIENT_MESSAGE,
-		STRUCT_MASK, close_program_esc, (void *)thread);
+		1 << 17, close_program_esc, (void *)thread);
 	mlx_loop(thread->mlx.mlx_ptr);
 }

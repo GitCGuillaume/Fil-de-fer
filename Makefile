@@ -45,7 +45,7 @@ RM = rm -f
 
 $(NAME): $(OBJS_BREN) $(OBJS_SEGMENT) $(OBJS_WIN) $(OBJS_PARSE) $(OBJS_GNL) $(OBJS_TOOLS) $(OBJS_MAIN)
 	make all -C ./libft
-	make -C ./minilibx-linux
+	$(MAKE) -C ./minilibx-linux
 	clang -Wall -Wextra -Werror -Iincludes -Ilibft -Iminilibx-linux -L./minilibx-linux -Isrcs/gnl -o $(NAME) $(SRCS_LIBFT) $(OBJS_GNL) $(OBJS_TOOLS) $(OBJS_PARSE) $(OBJS_BREN) $(OBJS_SEGMENT) $(OBJS_WIN) $(OBJS_MAIN) -lm -lmlx -lXext -lX11
 
 all:	$(NAME)
