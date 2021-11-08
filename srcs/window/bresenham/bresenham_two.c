@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 11:25:30 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 16:31:46 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 16:54:17 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	fourth_segment(t_thread *thread,
 	*dp = 2 * dx - dy;
 	while (end->y > start->y)
 	{
-		if (-500 > start->y)
-			break;
 		if (*dp > 0)
 		{
 			*dp = *dp + 2 * (dx - dy);
@@ -50,8 +48,6 @@ void	third_segment(t_thread *thread,
 	*dp = 2 * dy - dx;
 	while (start->x > end->x)
 	{
-		if (-500 > start->x)
-			break;
 		if (*dp > 0)
 		{
 			*dp = *dp + (2 * (dy - dx));
@@ -77,8 +73,6 @@ void	second_segment(t_thread *thread,
 	*dp = 2 * dx - dy;
 	while (end->y > start->y)
 	{
-		if (-500 > start->y)
-			break;
 		if (*dp > 0)
 		{
 			*dp = *dp + (2 * (dx - dy));
@@ -104,8 +98,6 @@ void	first_segment(t_thread *thread,
 	*dp = 2 * dy - dx;
 	while (end->x > start->x)
 	{
-		if (-500 > start->x)
-			break;
 		if (*dp > 0)
 		{
 			*dp = *dp + (2 * (dy - dx));

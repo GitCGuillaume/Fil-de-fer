@@ -6,7 +6,7 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:10:12 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 14:17:55 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 16:55:22 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	print_grill_row(t_thread *thread, int j_one, int i)
 {
 	if (thread->lines[i][j_one])
 	{
-		get_parse_altitude(thread, &thread->segment[1], thread->lines[i], j_one);
+		get_parse_altitude(thread,
+			&thread->segment[1], thread->lines[i], j_one);
 		draw_row_part_one(thread);
 	}
 }

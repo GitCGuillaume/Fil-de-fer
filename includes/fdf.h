@@ -6,7 +6,7 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:12:39 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 14:16:53 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 16:55:00 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	ft_parse_min_max(t_thread *thread, char *str);
 void	get_line_fd(t_thread *thread);
 int		parse_check_lines(t_thread *thread);
 char	*get_altitude_two(int *j, char *line, int start);
-int		get_parse_altitude(t_thread *thread, t_segment *segment, char *line, int j);
-
+int		get_parse_altitude(t_thread *thread,
+			t_segment *segment, char *line, int j);
 
 /*
  ** Window
