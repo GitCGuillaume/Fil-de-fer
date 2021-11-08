@@ -6,11 +6,11 @@ PATH_GNL = ./srcs/gnl
 
 SRCS_SEGMENT = $(PATH_WIN)/segment/segment.c $(PATH_WIN)/segment/segment_draw.c $(PATH_WIN)/segment/segment_start.c $(PATH_WIN)/segment/segment_tools.c
 
-SRCS_BREN = $(PATH_WIN)/bresenham/bresenham_tools.c $(PATH_WIN)/bresenham/bresenham_two.c $(PATH_WIN)/bresenham/bresenham.c
+SRCS_BREN = $(PATH_WIN)/bresenham/bresenham_two.c $(PATH_WIN)/bresenham/bresenham.c
 
 SRCS_WIN = $(PATH_WIN)/main.c
 
-SRCS_PARSE = ./srcs/parse_map/parse.c
+SRCS_PARSE = ./srcs/parse_map/parse.c ./srcs/parse_map/parse_two.c
 
 SRCS_TOOLS = $(PATH_TOOLS)/close.c $(PATH_TOOLS)/ft_isspace.c $(PATH_TOOLS)/ft_swap.c $(PATH_TOOLS)/pixel.c
 
@@ -45,7 +45,7 @@ RM = rm -f
 
 $(NAME): $(OBJS_BREN) $(OBJS_SEGMENT) $(OBJS_WIN) $(OBJS_PARSE) $(OBJS_GNL) $(OBJS_TOOLS) $(OBJS_MAIN)
 	make all -C ./libft
-	$(MAKE) -C ./minilibx-linux
+	make -C ./minilibx-linux
 	clang -Wall -Wextra -Werror -Iincludes -Ilibft -Iminilibx-linux -L./minilibx-linux -Isrcs/gnl -o $(NAME) $(SRCS_LIBFT) $(OBJS_GNL) $(OBJS_TOOLS) $(OBJS_PARSE) $(OBJS_BREN) $(OBJS_SEGMENT) $(OBJS_WIN) $(OBJS_MAIN) -lm -lmlx -lXext -lX11
 
 all:	$(NAME)

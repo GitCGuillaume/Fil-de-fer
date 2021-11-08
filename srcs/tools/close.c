@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:38:58 by gchopin           #+#    #+#             */
-/*   Updated: 2021/06/02 12:14:51 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 11:02:30 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	close_program_esc(t_thread *thread)
 	if (thread->line != NULL)
 		free(thread->line);
 	clear_lines(thread);
+	if (thread->mlx.mlx_img)
+		mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img);
 	if (thread->mlx.mlx_win)
 		mlx_destroy_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win);
 	if (thread->mlx.mlx_ptr)
@@ -54,6 +56,8 @@ void	close_program_error(t_thread *thread, char *str, int fd)
 	if (thread->line != NULL)
 		free(thread->line);
 	clear_lines(thread);
+	if (thread->mlx.mlx_img)
+		mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img);
 	if (thread->mlx.mlx_win)
 		mlx_destroy_window(thread->mlx.mlx_ptr, thread->mlx.mlx_win);
 	if (thread->mlx.mlx_ptr)

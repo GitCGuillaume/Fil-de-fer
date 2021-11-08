@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bresenham_tools.c                                  :+:      :+:    :+:   */
+/*   parse_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/28 19:55:10 by gchopin           #+#    #+#             */
-/*   Updated: 2021/09/28 19:57:01 by gchopin          ###   ########.fr       */
+/*   Created: 2021/11/08 11:40:43 by gchopin           #+#    #+#             */
+/*   Updated: 2021/11/08 11:43:04 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_altitude_two(int *j, char *line, int start)
 	{
 		while (line[*j] && ft_isdigit(line[*j]))
 			(*j)++;
-		if (line[start - 1] == '-')
+		if (start > 0 && line[start - 1] == '-')
 			str = ft_substr(line, (unsigned int)start - 1, *j - (start - 1));
 		else
 			str = ft_substr(line, (unsigned int)start, *j - start);
@@ -39,7 +39,7 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 
 	str = NULL;
 	if (line == NULL)
-		close_program_error(thread, "Map must not be empty.", 2);
+		close_program_error(thread, "Map must not be empty.\n", 2);
 	while (line[j] && ft_isdigit(line[j]) == 0)
 		j++;
 	if (ft_isdigit(line[j]))
@@ -51,9 +51,8 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 		ft_min_max(thread, str);
 		if (segment)
 			segment->altitude = ft_atoi(str);
-	}
-	if (str)
 		free(str);
+	}
 	if (line[j])
 		while (line[j] && ft_isdigit(line[j]) == 0)
 			j++;

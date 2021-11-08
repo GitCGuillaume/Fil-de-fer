@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/05 14:15:57 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 11:15:01 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	render_wireframe(void *param)
 		if (mlx_destroy_image(thread->mlx.mlx_ptr, thread->mlx.mlx_img))
 			close_program_error(thread, "Couldn't destroy image\n", 2);
 	thread->mlx.mlx_img = NULL;
-	if (mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
+	if (!mlx_get_screen_size(thread->mlx.mlx_ptr, &size_x, &size_y))
 		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
 	if (size_x <= 320 || size_y <= 200)
 		close_program_error(thread, "resolution must be at least 320x200.\n", 2);
@@ -80,7 +80,10 @@ void	init_window(t_thread *thread)
 	if (nb_lines == 0)
 		close_program_error(thread, "Error\n", 2);
 	thread->mlx.mlx_ptr = mlx_init();
-	if (mlx_get_screen_size(thread->mlx.mlx_ptr,
+	if (thread->mlx.mlx_ptr == NULL)
+		close_program_error(thread,
+			"Couldn't init minilibx42.\n", 2);
+	if (!mlx_get_screen_size(thread->mlx.mlx_ptr,
 			&thread->size_x, &thread->size_y))
 		close_program_error(thread,
 			"Couldn't get resolution screen.\n", 2);
@@ -91,6 +94,9 @@ void	init_window(t_thread *thread)
 	thread->nb_lines = (thread->size_y) / nb_lines;
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr,
 			thread->size_x, thread->size_y, "Wireframe");
+	if (thread->mlx.mlx_win == NULL)
+		close_program_error(thread,
+			"Couldn't display the wireframe.\n", 2);
 	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
 		1L << 0, ft_keypress, (void *)thread);
 	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
