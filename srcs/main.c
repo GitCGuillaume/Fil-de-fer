@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 12:14:33 by gchopin           #+#    #+#             */
-/*   Updated: 2021/07/28 00:34:03 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 12:14:27 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,11 @@ int	main(int argc, char **argv)
 	result = ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1]));
 	if (result == NULL)
 		close_program_error(0, "File format is wrong.\n", 2);
-	if (ft_strcmp(result, ".fdf") != 0)
-		close_program_error(0, "File extension format is wrong", 2);
 	thread.fd = ft_open_fd(argv[1]);
 	if (thread.fd != -1)
 		get_line_fd(&thread);
 	thread.lines = ft_split(thread.line, '|');
-	check_lines(&thread);
+	parse_check_lines(&thread);
 	init_window(&thread);
 	close_program_error(&thread, "End of program", 2);
 	return (0);

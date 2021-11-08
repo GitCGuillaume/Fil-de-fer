@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 11:40:43 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 11:43:04 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 14:20:15 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_altitude_two(int *j, char *line, int start)
 	return (str);
 }
 
-int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
+int	get_parse_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 {
 	char	*str;
 	int		start;
@@ -48,7 +48,7 @@ int	get_altitude(t_thread *thread, t_segment *segment, char *line, int j)
 		str = get_altitude_two(&j, line, start);
 		if (str == NULL)
 			close_program_error(thread, "No number returned\n", 2);
-		ft_min_max(thread, str);
+		ft_parse_min_max(thread, str);
 		if (segment)
 			segment->altitude = ft_atoi(str);
 		free(str);

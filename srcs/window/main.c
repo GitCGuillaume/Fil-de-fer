@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 11:15:01 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 16:49:42 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,18 @@ size_t	ft_nb_lines(char **lines)
 	return (i);
 }
 
+void	wait_mlx_hook(t_thread *thread)
+{
+	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
+		1L << 0, ft_keypress, (void *)thread);
+	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
+		1L << 1, ft_keypress, (void *)thread);
+	mlx_loop_hook(thread->mlx.mlx_ptr, &render_wireframe, (void *)thread);
+	mlx_hook(thread->mlx.mlx_win, CLIENT_MESSAGE,
+		1 << 17, close_program_esc, (void *)thread);
+	mlx_loop(thread->mlx.mlx_ptr);
+}
+
 void	init_window(t_thread *thread)
 {
 	size_t	nb_lines;
@@ -91,18 +103,10 @@ void	init_window(t_thread *thread)
 		close_program_error(thread,
 			"resolution must be at least 320x200.\n", 2);
 	thread->std_segment_x = (thread->size_x) / thread->nb_segment;
-	thread->nb_lines = (thread->size_y) / nb_lines;
 	thread->mlx.mlx_win = mlx_new_window(thread->mlx.mlx_ptr,
 			thread->size_x, thread->size_y, "Wireframe");
 	if (thread->mlx.mlx_win == NULL)
 		close_program_error(thread,
 			"Couldn't display the wireframe.\n", 2);
-	mlx_hook(thread->mlx.mlx_win, KEYPRESS,
-		1L << 0, ft_keypress, (void *)thread);
-	mlx_hook(thread->mlx.mlx_win, KEYRELEASE,
-		1L << 1, ft_keypress, (void *)thread);
-	mlx_loop_hook(thread->mlx.mlx_ptr, &render_wireframe, (void *)thread);
-	mlx_hook(thread->mlx.mlx_win, CLIENT_MESSAGE,
-		1 << 17, close_program_esc, (void *)thread);
-	mlx_loop(thread->mlx.mlx_ptr);
+	wait_mlx_hook(thread);
 }

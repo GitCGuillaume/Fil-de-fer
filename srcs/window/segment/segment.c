@@ -6,7 +6,7 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:10:12 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 10:49:19 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 14:17:55 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	print_grill_row(t_thread *thread, int j_one, int i)
 {
 	if (thread->lines[i][j_one])
 	{
-		get_altitude(thread, &thread->segment[1], thread->lines[i], j_one);
+		get_parse_altitude(thread, &thread->segment[1], thread->lines[i], j_one);
 		draw_row_part_one(thread);
 	}
 }
@@ -25,10 +25,10 @@ static void	print_grill_column(t_thread *thread, int *j_two, int i)
 {
 	if (thread->lines[i + 1])
 	{
-		*j_two = get_altitude(thread,
+		*j_two = get_parse_altitude(thread,
 				&thread->segment[2], thread->lines[i + 1], *j_two);
 		if (thread->lines[i + 1][*j_two])
-			get_altitude(thread,
+			get_parse_altitude(thread,
 				&thread->segment[3], thread->lines[i + 1], *j_two);
 		draw_row_part_two(thread);
 	}
@@ -41,14 +41,14 @@ static void	run_projection(t_thread *thread)
 	int	j_two;
 
 	i = 0;
-	get_altitude(thread, &thread->segment[0], thread->lines[i], 0);
+	get_parse_altitude(thread, &thread->segment[0], thread->lines[i], 0);
 	while (thread->lines[i] != 0)
 	{
 		j_one = 0;
 		j_two = 0;
 		while (thread->lines[i][j_one])
 		{
-			j_one = get_altitude(thread,
+			j_one = get_parse_altitude(thread,
 					&thread->segment[0], thread->lines[i], j_one);
 			print_grill_row(thread, j_one, i);
 			print_grill_column(thread, &j_two, i);

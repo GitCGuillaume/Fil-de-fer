@@ -6,7 +6,7 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:12:39 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/05 14:19:22 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 14:16:53 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_thread
 	int			nb_segment;
 	int			nb_lines;
 	int			std_segment_x;
-	int			std_segment_y;
 	int			size_x;
 	int			size_y;
 	int			colour;
@@ -75,9 +74,12 @@ typedef struct s_thread
  ** Parse map
 */
 
-void	ft_min_max(t_thread *thread, char *str);
+void	ft_parse_min_max(t_thread *thread, char *str);
 void	get_line_fd(t_thread *thread);
-int		check_lines(t_thread *thread);
+int		parse_check_lines(t_thread *thread);
+char	*get_altitude_two(int *j, char *line, int start);
+int		get_parse_altitude(t_thread *thread, t_segment *segment, char *line, int j);
+
 
 /*
  ** Window
@@ -113,13 +115,6 @@ void	second_segment(t_thread *thread, int *dp,
 			t_segment *start, t_segment *end);
 void	first_segment(t_thread *thread, int *dp,
 			t_segment *start, t_segment *end);
-
-/*
- ** Bresenham tools
-*/
-
-char	*get_altitude_two(int *j, char *line, int start);
-int		get_altitude(t_thread *thread, t_segment *segment, char *line, int j);
 
 /*
  ** Tools

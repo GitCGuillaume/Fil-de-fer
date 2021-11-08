@@ -6,13 +6,13 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 14:02:41 by gchopin           #+#    #+#             */
-/*   Updated: 2021/09/28 11:10:09 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/08 14:01:48 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	ft_min_max(t_thread *thread, char *str)
+void	ft_parse_min_max(t_thread *thread, char *str)
 {
 	if (str == NULL)
 		close_program_error(thread, "Line NULL\n", 2);
@@ -38,7 +38,7 @@ static void	get_number(t_thread *thread, int *i, int *j, int *current_nb)
 	}
 }
 
-int	check_lines(t_thread *thread)
+int	parse_check_lines(t_thread *thread)
 {
 	int	i;
 	int	j;
