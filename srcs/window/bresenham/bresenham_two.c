@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 11:25:30 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 17:16:23 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/16 21:23:51 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	fourth_segment(t_thread *thread,
 {
 	int	dx;
 	int	dy;
-	
+
 	dx = start->x - end->x;
 	dy = end->y - start->y;
 	*dp = 2 * dx - dy;
@@ -42,7 +42,7 @@ void	third_segment(t_thread *thread,
 {
 	int	dx;
 	int	dy;
-	
+
 	dx = start->x - end->x;
 	dy = end->y - start->y;
 	*dp = 2 * dy - dx;
@@ -67,7 +67,7 @@ void	second_segment(t_thread *thread,
 {
 	int	dx;
 	int	dy;
-	
+
 	dx = end->x - start->x;
 	dy = end->y - start->y;
 	*dp = 2 * dx - dy;

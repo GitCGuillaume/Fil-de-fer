@@ -6,28 +6,33 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 16:30:58 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/16 20:43:32 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/16 21:02:14 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/*
+ ** Need to align width offset to put a pixel into the image
+ ** Then just put rgb into the img addr
+*/
+
 void	draw_pixel(t_thread *thread, int x, int y)
 {
-	int	pixel;
+	int	offset;
 	int	colour;
 
 	if (x < 0 || y < 0
 		|| x > thread->size_x || y > thread->size_y)
 		return ;
-	pixel = (y * thread->mlx.size_line) + (x * thread->mlx.bpp / 8);
+	offset = (y * thread->mlx.size_line) + (x * thread->mlx.bpp / 8);
 	colour = thread->colour;
-	if (!thread->mlx.mlx_get_data[pixel + 0])
-		thread->mlx.mlx_get_data[pixel + 0] = colour;
-	if (!thread->mlx.mlx_get_data[pixel + 1])
-		thread->mlx.mlx_get_data[pixel + 1] = colour >> 8;
-	if (!thread->mlx.mlx_get_data[pixel + 2])
-		thread->mlx.mlx_get_data[pixel + 2] = colour >> 16;
+	if (!thread->mlx.mlx_get_data[offset + 0])
+		thread->mlx.mlx_get_data[offset + 0] = colour;
+	if (!thread->mlx.mlx_get_data[offset + 1])
+		thread->mlx.mlx_get_data[offset + 1] = colour >> 8;
+	if (!thread->mlx.mlx_get_data[offset + 2])
+		thread->mlx.mlx_get_data[offset + 2] = colour >> 16;
 }
 
 int	get_colour(void *mlx_ptr)
