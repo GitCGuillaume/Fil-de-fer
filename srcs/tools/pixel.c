@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 16:30:58 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 16:57:32 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/16 20:43:32 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	draw_pixel(t_thread *thread, int x, int y)
 	if (x < 0 || y < 0
 		|| x > thread->size_x || y > thread->size_y)
 		return ;
-	pixel = (y * thread->mlx.size_line) + (x * 4);
+	pixel = (y * thread->mlx.size_line) + (x * thread->mlx.bpp / 8);
 	colour = thread->colour;
 	if (!thread->mlx.mlx_get_data[pixel + 0])
 		thread->mlx.mlx_get_data[pixel + 0] = colour;
