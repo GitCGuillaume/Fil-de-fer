@@ -6,7 +6,7 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:10:12 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 16:55:22 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:08:07 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,6 @@ static void	run_projection(t_thread *thread)
 
 void	get_segment(t_thread *thread)
 {
-	thread->colour = get_colour(thread->mlx.mlx_ptr);
-	if (!mlx_get_screen_size(thread->mlx.mlx_ptr,
-			&thread->segment[1].x, &thread->segment[0].y))
-	{
-		close_program_error(thread, "Couldn't get resolution screen.\n", 2);
-	}
 	thread->segment[0].y = 0 + thread->mov_ud;
 	thread->segment[2].y = thread->segment[0].y;
 	thread->segment[0].x = 0 + thread->mov_lr;

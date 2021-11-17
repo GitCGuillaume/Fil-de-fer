@@ -6,7 +6,7 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 11:07:15 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/08 16:49:42 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:08:25 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ void	init_window(t_thread *thread)
 	if (thread->mlx.mlx_win == NULL)
 		close_program_error(thread,
 			"Couldn't display the wireframe.\n", 2);
+	thread->colour = get_colour(thread->mlx.mlx_ptr);
 	wait_mlx_hook(thread);
 }
