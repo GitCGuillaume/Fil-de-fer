@@ -74,9 +74,7 @@ int	main(int argc, char **argv)
 {
 	t_thread	thread;
 	char		*result;
-	int			i;
 
-	i = 0;
 	init_null_struct(&thread);
 	if (argc != 2)
 		close_program_error(0, "Wrong number of parameter.\n", 2);

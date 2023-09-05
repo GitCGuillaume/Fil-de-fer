@@ -6,11 +6,15 @@
 /*   By: gchopin <gchopin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 11:25:30 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/17 13:24:51 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/17 17:25:49 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+ ** S / SW
+*/
 
 void	fourth_segment(t_thread *thread,
 	int *dp, t_segment *start, t_segment *end)
@@ -38,6 +42,10 @@ void	fourth_segment(t_thread *thread,
 	}
 }
 
+/*
+ ** W / SW
+*/
+
 void	third_segment(t_thread *thread,
 	int *dp, t_segment *start, t_segment *end)
 {
@@ -64,6 +72,10 @@ void	third_segment(t_thread *thread,
 	}
 }
 
+/*
+ ** SE / N
+*/
+
 void	second_segment(t_thread *thread,
 	int *dp, t_segment *start, t_segment *end)
 {
@@ -89,6 +101,10 @@ void	second_segment(t_thread *thread,
 		draw_pixel(thread, start->x, start->y);
 	}
 }
+
+/*
+ ** SE / E
+*/
 
 void	first_segment(t_thread *thread,
 	int *dp, t_segment *start, t_segment *end)

@@ -6,19 +6,23 @@
 /*   By: gchopin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 14:10:12 by gchopin           #+#    #+#             */
-/*   Updated: 2021/11/17 11:08:07 by gchopin          ###   ########.fr       */
+/*   Updated: 2021/11/17 19:51:37 by gchopin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	print_grill_row(t_thread *thread, int j_one, int i)
+static void	print_grill_row(t_thread *thread, int j_one, int i, int nb)
 {
 	if (thread->lines[i][j_one])
 	{
 		get_parse_altitude(thread,
 			&thread->segment[1], thread->lines[i], j_one);
 		draw_row_part_one(thread);
+	}
+	else if (j_one > 0 && nb == 1)
+	{
+		bresenham(thread, thread->segment[0], thread->segment[2]);
 	}
 }
 
@@ -40,18 +44,20 @@ static void	run_projection(t_thread *thread)
 	int	i;
 	int	j_one;
 	int	j_two;
+	int	nb;
 
 	i = 0;
-	get_parse_altitude(thread, &thread->segment[0], thread->lines[i], 0);
+	nb = 0;
 	while (thread->lines[i] != 0)
 	{
 		j_one = 0;
 		j_two = 0;
 		while (thread->lines[i][j_one])
 		{
+			nb++;
 			j_one = get_parse_altitude(thread,
 					&thread->segment[0], thread->lines[i], j_one);
-			print_grill_row(thread, j_one, i);
+			print_grill_row(thread, j_one, i, nb);
 			print_grill_column(thread, &j_two, i);
 			set_row(thread);
 		}
