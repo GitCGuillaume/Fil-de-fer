@@ -6,6 +6,8 @@ Projet qui consiste à  afficher une cartographie, en utilisant la perspective i
 
 Ce projet pourrait avoir besoin de certains paquets:
 > apt-get install libxext-dev libbsd-dev
+>
+> sudo apt-get install make
 
 Compilation:
 >make all
